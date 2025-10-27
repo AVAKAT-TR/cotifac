@@ -77,9 +77,7 @@ WSGI_APPLICATION = 'mvt_django.wsgi.application'
 import os
 from pathlib import Path
 
-# --- Permitir imágenes grandes (para PDF y logos en Render) ---
-from PIL import Image
-Image.MAX_IMAGE_PIXELS = None
+
 
 
 #BASE_DIR = Path(__file__).resolve().parent.parent
@@ -167,3 +165,10 @@ LOGOUT_REDIRECT_URL = "login"     # a dónde ir después de cerrar sesión
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
+
+
+
+
+# --- Permitir imágenes grandes (para PDF y logos en Render) ---
+from PIL import Image
+Image.MAX_IMAGE_PIXELS = None
