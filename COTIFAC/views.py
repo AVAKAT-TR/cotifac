@@ -249,13 +249,13 @@ def orden_pdf(request, pk):
 
     # --- Logo ---
     from django.conf import settings
-#    logo_path = os.path.join(settings.BASE_DIR, "COTIFAC", "static", "images", "logoo.png")
-#    if os.path.exists(logo_path):
-#        logo = Image(logo_path, width=5.1*cm, height=4*cm)
-#
-#        logo.hAlign = 'CENTER'
-#        elements.append(Spacer(1, 10))
-#        elements.append(logo)
+    logo_path = os.path.join(settings.BASE_DIR, "COTIFAC", "static", "images", "logoo.png")
+    if os.path.exists(logo_path):
+        logo = Image(logo_path, width=5.1*cm, height=4*cm)
+
+        logo.hAlign = 'CENTER'
+        elements.append(Spacer(1, 10))
+        elements.append(logo)
 
     elements.append(Paragraph("LA CASA DE LOS GANSOS", title))
     elements.append(Paragraph("Plumones y almohadas", subtitle))
