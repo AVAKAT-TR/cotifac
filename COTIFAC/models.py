@@ -9,11 +9,17 @@ class OrdenCompra(models.Model):
     descuento = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     monto_total = models.DecimalField(max_digits=12, decimal_places=2)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    estado = models.CharField(max_length=20, choices=[
-        ("pendiente", "Pendiente"),
-        ("aprobada", "Aprobada"),
-        ("rechazada", "Rechazada"),
-    ], default="pendiente")
+    TIPO_CHOICES = [
+        ("COTIZACIÓN", "Cotización"),
+        ("FACTURA", "Factura"),
+    ]
+
+    tipo_documento = models.CharField(
+        max_length=20,
+        choices=TIPO_CHOICES,
+        default="COTIZACIÓN",
+    )
+
 
     def __str__(self):
         return f"Orden {self.id} - {self.comprador}"

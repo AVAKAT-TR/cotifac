@@ -12,4 +12,17 @@ urlpatterns = [
     path("delete/<int:pk>/", views.orden_delete, name="orden_delete"),
     path("orden/<int:pk>/aprobar/", views.orden_aprobar, name="orden_aprobar"),
     path("orden/<int:pk>/rechazar/", views.orden_rechazar, name="orden_rechazar"),
+    
+    #--------PARA FACTURAS_------------------
+    # Facturas
+    path("facturas/", views.factura_list, name="factura_list"),
+    path("facturas/nueva/", views.crear_factura, name="factura_create"),
+    path("facturas/pdf/<int:pk>/", views.factura_pdf, name="factura_pdf"),
+    path("facturas/eliminar/<int:pk>/", views.factura_delete, name="factura_delete"),
+    path("facturas/aprobar/<int:pk>/", views.factura_aprobar, name="factura_aprobar"),
+    path("facturas/rechazar/<int:pk>/", views.factura_rechazar, name="factura_rechazar"),
+
+
+
+
 ]
