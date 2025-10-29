@@ -40,11 +40,11 @@
     }
 
 
-    .NuevaOrden{
+    .Nuevafactura{
       margin-top: 20px;
       padding: 12px 22px;
       font-size: 20px;
-      background-color: #228a69;
+      background-color: #2075b1;
       color: rgb(255, 255, 255);
       border: none;
       border-radius: 4px;
@@ -54,14 +54,15 @@
 
 
 
-    .COTI {
+
+        .FAC {
       color: red;
     }
 
-    .FAC {
+    .COTI {
       color: white;
     }
-
+    
   </style>
 </head>
 <body>
@@ -71,15 +72,13 @@
     <!-- 
     <h1>COTIFAC :v</h1>
     -->
+      
   <button class="Titulo-Principal">
     <span class="COTI">COTI</span><span class="FAC">FAC</span> :V
   </button>
 
-
   </div>
-
-
-  pronto <a class="NuevaOrden" href="{% url 'factura_list' %}">✚ Factura</a> ronto
+  <a class="Nuevafactura" href="{% url 'orden_list' %}"">Cotización</a>
   </div>
 
 
@@ -91,7 +90,7 @@
     <a href="{% url 'logout' %}">Cerrar sesión</a>
   </p>
 
-  <a class="NuevaOrden" href="{% url 'orden_create' %}">✚ Nueva Cotización</a>
+  <a class="Nuevafactura" href="{% url 'factura_create' %}">✚ Nueva Factura</a>
 
   <table>
     <tr>
@@ -103,21 +102,21 @@
       <th>Tipo</th>
       <th>Acciones</th>
     </tr>
-    {% for orden in ordenes %}
-    <tr class="fila-{{ orden.estado }}">
-      <td>{{ orden.id }}</td>
-      <td>{{ orden.comprador }}</td>
-      <td>{{ orden.vendedor }}</td>
-      <td>{{ orden.fecha_emision }}</td>
-      <td>${{ orden.monto_total|formato_moneda }}</td>
+    {% for factura in facturas %}
+    <tr class="fila-{{ factura.estado }}">
+      <td>{{ factura.id }}</td>
+      <td>{{ factura.comprador }}</td>
+      <td>{{ factura.vendedor }}</td>
+      <td>{{ factura.fecha_emision }}</td>
+      <td>${{ factura.monto_total|formato_moneda }}</td>
       <td>{{ orden.tipo_documento }}</td>
       <td>
-        <a href="{% url 'orden_pdf' orden.id %}">📄 PDF</a> |
-        <a href="{% url 'orden_delete' orden.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta orden?');">🗑️ Eliminar</a>
+        <a href="{% url 'factura_pdf' factura.id %}">📄 PDF</a> |
+        <a href="{% url 'factura_delete' factura.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta factura?');">🗑️ Eliminar</a>
 
         {% if request.user.is_superuser %}
-          | <a href="{% url 'orden_aprobar' orden.id %}">✅ Aprobar</a>
-          | <a href="{% url 'orden_rechazar' orden.id %}">❌ Rechazar</a>
+          | <a href="{% url 'factura_aprobar' factura.id %}">✅ Aprobar</a>
+          | <a href="{% url 'factura_rechazar' factura.id %}">❌ Rechazar</a>
         {% endif %}
       </td>
     </tr>
