@@ -109,7 +109,7 @@
       <td>{{ factura.vendedor }}</td>
       <td>{{ factura.fecha_emision }}</td>
       <td>${{ factura.monto_total|formato_moneda }}</td>
-      <td>{{ orden.tipo_documento }}</td>
+      <td>{{ factura.tipo_documento }}</td>
       <td>
         <a href="{% url 'factura_pdf' factura.id %}">📄 PDF</a> |
         <a href="{% url 'factura_delete' factura.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta factura?');">🗑️ Eliminar</a>
