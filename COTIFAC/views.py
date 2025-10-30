@@ -89,10 +89,12 @@ def register_view(request):
 @login_required
 def orden_list(request):
     if request.user.is_superuser:
-        ordenes = OrdenCompra.objects.all()
+        ordenes = OrdenCompra.objects.filter(tipo_documento="COTIZACIÓN")
     else:
-        ordenes = OrdenCompra.objects.filter(usuario=request.user)
+        ordenes = OrdenCompra.objects.filter(usuario=request.user, tipo_documento="COTIZACIÓN")
+
     return render(request, "COTIFAC/orden_list.html", {"ordenes": ordenes})
+
 
 
 @login_required
@@ -528,10 +530,12 @@ def orden_pdf(request, pk):
 @login_required
 def factura_list(request):
     if request.user.is_superuser:
-        facturas = OrdenCompra.objects.all()
+        facturas = OrdenCompra.objects.filter(tipo_documento="FACTURA")
     else:
-        facturas = OrdenCompra.objects.filter(usuario=request.user)
+        facturas = OrdenCompra.objects.filter(usuario=request.user, tipo_documento="FACTURA")
+
     return render(request, "COTIFAC/factura_list.html", {"facturas": facturas})
+
 
 
 @login_required
