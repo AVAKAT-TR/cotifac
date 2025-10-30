@@ -71,23 +71,47 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mvt_django.wsgi.application'
 
 
+
+
+# --- Configuración de base de datos PostgreSQL (Render) ---
+import dj_database_url
+import os
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
+
+
+
+
+
+
+
+
+
+
+#---------------ABAJO ESTA LA QUE USABA CON SQLITE FUNCIONANDO ----------------#
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-import os
-from pathlib import Path
+#import os
+#from pathlib import Path
 
 
 
 
 #BASE_DIR = Path(__file__).resolve().parent.parent
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
 
-
+#---------ARRIBA ESTA LA QUE USABA FUNCINANDO CON SQLITE-----------------#
 
 #import os
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
