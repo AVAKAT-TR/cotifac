@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>facturaón</title>
+  <title>Factura</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -43,12 +43,7 @@
     button:hover { background-color: #2a5052; }
   </style>
 
-
-
-
-
 <script>
-  // --- Productos cargados desde Django ---
   const productos = {{ productos_json|safe }};
 
   function formatNumber(num) {
@@ -58,7 +53,6 @@
   function actualizarPrecio(select) {
     const row = select.closest("tr");
     const id = select.value;
-
     const descripcionInput = row.querySelector('input[name$="-descripcion"]');
     const precioInput = row.querySelector('input[name$="-precio"]');
 
@@ -75,54 +69,54 @@
   function calcularTotales() {
     let subtotal = 0;
 
-    // --- Calcular totales de productos normales ---
+    // --- Productos normales ---
     const filas = document.querySelectorAll("#items-table tr.item-row");
     filas.forEach(fila => {
       const cantidad = parseFloat(fila.querySelector('input[name$="-cantidad"]').value) || 0;
       const precio = parseFloat(fila.querySelector('input[name$="-precio"]').value) || 0;
       const total = cantidad * precio;
-
       const totalInput = fila.querySelector(".total-item");
       if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
-
       subtotal += total;
     });
 
-    // --- Calcular productos especiales (hasta 4) ---
+    // --- Productos especiales (hasta 4) ---
     for (let i = 1; i <= 4; i++) {
       const cantidad = parseFloat(document.querySelector(`input[name="especial_cantidad_${i}"]`)?.value) || 0;
       const precio = parseFloat(document.querySelector(`input[name="especial_precio_${i}"]`)?.value) || 0;
       const total = cantidad * precio;
 
-      // actualizar el campo total visual de cada producto especial
       const totalInput = document.querySelectorAll(".total-item-especial")[i - 1];
       if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
-
-      subtotal += total; // se suma al total general
+      subtotal += total;
     }
 
-    // --- Leer descuento dinámico desde el campo del formulario ---
+    // --- Descuento ---
     const descuentoInput = document.getElementById("id_descuento");
     const descuentoPorcentaje = parseFloat(descuentoInput ? descuentoInput.value : 0) || 0;
-
     const descuento = subtotal * (descuentoPorcentaje / 100);
-    const totalFinal = subtotal - descuento;
 
-    // --- Actualizar campos en pantalla ---
+    // --- IVA 19% automático ---
+    const baseImponible = subtotal - descuento;
+    const iva = baseImponible * 0.19;
+
+    // --- Total final ---
+    const totalFinal = baseImponible + iva;
+
+    // --- Mostrar resultados ---
     document.getElementById("subtotal").value = formatNumber(subtotal);
     document.getElementById("descuento_monto").value = formatNumber(descuento);
+    document.getElementById("iva").value = formatNumber(iva);
     document.getElementById("id_monto_total").value = formatNumber(totalFinal);
     document.getElementById("monto_total_hidden").value = totalFinal;
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    // Escucha cambios en productos normales
     document.querySelectorAll("#items-table input, #items-table select").forEach(el => {
       el.addEventListener("input", calcularTotales);
       el.addEventListener("change", calcularTotales);
     });
 
-    // Escucha cambios en los 4 productos especiales
     for (let i = 1; i <= 4; i++) {
       const cantidad = document.querySelector(`input[name="especial_cantidad_${i}"]`);
       const precio = document.querySelector(`input[name="especial_precio_${i}"]`);
@@ -130,7 +124,6 @@
       if (precio) precio.addEventListener("input", calcularTotales);
     }
 
-    // Escucha cambios en el descuento (%)
     const descuentoInput = document.getElementById("id_descuento");
     if (descuentoInput) {
       descuentoInput.addEventListener("input", calcularTotales);
@@ -140,21 +133,16 @@
     calcularTotales();
   });
 </script>
-
-
-
-
-
-
 </head>
+
 <body>
-  <h1>Nueva facturaón :v</h1>
+  <h1>Nueva factura :v</h1>
   <form method="post">
     {% csrf_token %}
 
     <p>Comprador: {{ form.comprador }}</p>
     <p>Fecha emisión: {{ form.fecha_emision }}</p>
-    <p>Fecha envio: {{ form.fecha_vencimiento }}</p>
+    <p>Fecha envío: {{ form.fecha_vencimiento }}</p>
 
     <h3>Detalle de Productos</h3>
     <table id="items-table">
@@ -176,32 +164,26 @@
       </tr>
       {% endfor %}
     </table>
-    
 
-
-
-  <table>
-    <tr class="item-row especial">
-      <td colspan="5" style="background-color:#f7f7f7; font-weight:bold;">Productos especiales</td>
-    </tr>
-    <tr>
-      <th style="background-color:#f7f7f7;">Descripción :V</th>
-      <th style="background-color:#f7f7f7;">Unidades</th>
-      <th style="background-color:#f7f7f7;">Precio Unitario</th>
-      <th style="background-color:#f7f7f7;">Total</th>
-    </tr>
-
-    {% for i in "1234" %}
-    <tr class="item-row especial">
-      <td><input type="text" name="especial_tipo_{{i}}" placeholder="Descripción del producto" style="width:95%"></td>
-      <td><input type="number" min="0" name="especial_cantidad_{{i}}" value="0" style="width:80px"></td>
-      <td><input type="number" min="0" name="especial_precio_{{i}}" value="0" style="width:100px"></td>
-      <td><input type="text" class="total-item-especial" readonly></td>
-    </tr>
-    {% endfor %}
-  </table>
-
-
+    <table>
+      <tr class="item-row especial">
+        <td colspan="5" style="background-color:#f7f7f7; font-weight:bold;">Productos especiales</td>
+      </tr>
+      <tr>
+        <th style="background-color:#f7f7f7;">Descripción</th>
+        <th style="background-color:#f7f7f7;">Unidades</th>
+        <th style="background-color:#f7f7f7;">Precio Unitario</th>
+        <th style="background-color:#f7f7f7;">Total</th>
+      </tr>
+      {% for i in "1234" %}
+      <tr class="item-row especial">
+        <td><input type="text" name="especial_tipo_{{i}}" placeholder="Descripción del producto" style="width:95%"></td>
+        <td><input type="number" min="0" name="especial_cantidad_{{i}}" value="0" style="width:80px"></td>
+        <td><input type="number" min="0" name="especial_precio_{{i}}" value="0" style="width:100px"></td>
+        <td><input type="text" class="total-item-especial" readonly></td>
+      </tr>
+      {% endfor %}
+    </table>
 
     <table id="totales">
       <tr>
@@ -210,45 +192,26 @@
       </tr>
       <tr>
         <td>Descuento (%):</td>
-        <td>
-          {{ form.descuento }} %
-        </td>
+        <td>{{ form.descuento }} %</td>
       </tr>
       <tr>
         <td>Monto de descuento:</td>
         <td><input type="text" id="descuento_monto" readonly></td>
       </tr>
       <tr>
-        <td><b>Valor Final:</b></td>
+        <td>IVA (19%):</td>
+        <td><input type="text" id="iva" readonly></td>
+      </tr>
+      <tr style="background-color:#f2f2f2; font-weight:bold;">
+        <td>Valor Final:</td>
         <td><input type="text" id="id_monto_total" readonly></td>
       </tr>
-      <!--
-      <tr class="item-row especial">
-      <td colspan="5" style="text-align:left; font-weight:bold; background-color:#f7f7f7;">
-        Producto especial (editable)
-      </td>
-      </tr>
-      -->
-
-
-      <!--
-      <tr class="item-row especial">
-        <td><input type="text" placeholder="Nombre del producto especial" name="especial_nombre" style="width:95%"></td>
-        <td><input type="text" placeholder="Descripción" name="especial_descripcion" style="width:95%"></td>
-        <td><input type="number" min="0" step="1" name="especial_cantidad" style="width:80px"></td>
-        <td><input type="number" min="0" step="100" name="especial_precio" style="width:120px"></td>
-        <td><input type="text" class="total-item-especial" readonly></td>
-      </tr>
-    -->
-
-
     </table>
 
     <input type="hidden" name="monto_total" id="monto_total_hidden">
-
-
     <button type="submit">Guardar</button>
   </form>
+
   <a href="{% url 'factura_list' %}">⬅ Volver</a>
 </body>
 </html>
