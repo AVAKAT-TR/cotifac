@@ -44,6 +44,7 @@
   </style>
 
 <script>
+  // --- Productos cargados desde Django ---
   const productos = {{ productos_json|safe }};
 
   function formatNumber(num) {
@@ -53,6 +54,7 @@
   function actualizarPrecio(select) {
     const row = select.closest("tr");
     const id = select.value;
+
     const descripcionInput = row.querySelector('input[name$="-descripcion"]');
     const precioInput = row.querySelector('input[name$="-precio"]');
 
@@ -69,18 +71,20 @@
   function calcularTotales() {
     let subtotal = 0;
 
-    // --- Productos normales ---
+    // --- Calcular productos normales ---
     const filas = document.querySelectorAll("#items-table tr.item-row");
     filas.forEach(fila => {
       const cantidad = parseFloat(fila.querySelector('input[name$="-cantidad"]').value) || 0;
       const precio = parseFloat(fila.querySelector('input[name$="-precio"]').value) || 0;
       const total = cantidad * precio;
+
       const totalInput = fila.querySelector(".total-item");
       if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
+
       subtotal += total;
     });
 
-    // --- Productos especiales (hasta 4) ---
+    // --- Calcular productos especiales ---
     for (let i = 1; i <= 4; i++) {
       const cantidad = parseFloat(document.querySelector(`input[name="especial_cantidad_${i}"]`)?.value) || 0;
       const precio = parseFloat(document.querySelector(`input[name="especial_precio_${i}"]`)?.value) || 0;
@@ -88,27 +92,30 @@
 
       const totalInput = document.querySelectorAll(".total-item-especial")[i - 1];
       if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
+
       subtotal += total;
     }
 
     // --- Descuento ---
     const descuentoInput = document.getElementById("id_descuento");
     const descuentoPorcentaje = parseFloat(descuentoInput ? descuentoInput.value : 0) || 0;
-    const descuento = subtotal * (descuentoPorcentaje / 100);
+    const montoDescuento = subtotal * (descuentoPorcentaje / 100);
 
-    // --- IVA 19% automático ---
-    const baseImponible = subtotal - descuento;
-    const iva = baseImponible * 0.19;
+    // --- Subtotal con descuento aplicado ---
+    const subtotalConDescuento = subtotal - montoDescuento;
 
-    // --- Total final ---
-    const totalFinal = baseImponible + iva;
+    // --- IVA (19%) ---
+    const iva = subtotalConDescuento * 0.19;
 
-    // --- Mostrar resultados ---
+    // --- Valor final (subtotal - descuento + iva) ---
+    const valorFinal = subtotalConDescuento + iva;
+
+    // --- Mostrar en pantalla ---
     document.getElementById("subtotal").value = formatNumber(subtotal);
-    document.getElementById("descuento_monto").value = formatNumber(descuento);
+    document.getElementById("descuento_monto").value = formatNumber(montoDescuento);
     document.getElementById("iva").value = formatNumber(iva);
-    document.getElementById("id_monto_total").value = formatNumber(totalFinal);
-    document.getElementById("monto_total_hidden").value = totalFinal;
+    document.getElementById("id_monto_total").value = formatNumber(valorFinal);
+    document.getElementById("monto_total_hidden").value = valorFinal;
   }
 
   window.addEventListener("DOMContentLoaded", () => {
@@ -133,6 +140,7 @@
     calcularTotales();
   });
 </script>
+
 </head>
 
 <body>
@@ -187,7 +195,7 @@
 
     <table id="totales">
       <tr>
-        <td>Valor total:</td>
+        <td>Valor neto:</td>
         <td><input type="text" id="subtotal" readonly></td>
       </tr>
       <tr>
