@@ -14,10 +14,14 @@ User = get_user_model();
 User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@example.com', 'Admin1234')
 "
 
-    startCommand: "gunicorn mvt_django.wsgi:application"
+    startCommand: "gunicorn COTIFAC.wsgi:application"
 
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: mvt_django.settings
+        value: COTIFAC.settings
       - key: PYTHON_VERSION
         value: 3.13.7
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cotifac-db       # 👈 Este nombre debe ser igual al que pusiste al crear la DB en Render
+          property: connectionString
