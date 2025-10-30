@@ -719,15 +719,28 @@ def factura_pdf(request, pk):
 
     descuento_str = f"{orden.descuento:.0f}" if orden.descuento % 1 == 0 else f"{orden.descuento}"
 
+    # --- Totales ---
+    subtotal = sum(item.subtotal() for item in orden.items.all())
+    descuento = subtotal * (Decimal(orden.descuento) / Decimal(100))
+    subtotal_con_descuento = subtotal - descuento
+    iva = subtotal_con_descuento * Decimal("0.19")
+    total = subtotal_con_descuento + iva
+
+    # 👇 Redondear descuento limpio (sin .00)
+    descuento_str = f"{orden.descuento:.0f}" if orden.descuento % 1 == 0 else f"{orden.descuento}"
+
+    # --- Estructura visual del desglose ---
     totales = [
-        [Paragraph(f"Descuento {descuento_str}%:", styles["Normal"]),
+        [Paragraph("Valor neto:", styles["Normal"]),
+         Paragraph(f"${formato_numero(subtotal)}", styles["Normal"])],
+        [Paragraph(f"Descuento aplicado ({descuento_str}%):", styles["Normal"]),
          Paragraph(f"- ${formato_numero(descuento)}", styles["Normal"])],
-        [Paragraph("Valor total Neto:", styles["Normal"]),
-         Paragraph(f"${formato_numero(valor_neto)}", styles["Normal"])],
+        [Paragraph("Valor neto con descuento:", styles["Normal"]),
+         Paragraph(f"${formato_numero(subtotal_con_descuento)}", styles["Normal"])],
         [Paragraph("IVA (19%):", styles["Normal"]),
          Paragraph(f"${formato_numero(iva)}", styles["Normal"])],
-        [Paragraph("<b>Valor Total Bruto:</b>", styles["Normal"]),
-         Paragraph(f"<b>${formato_numero(total_bruto)}</b>", styles["Normal"])],
+        [Paragraph("<b>Valor Final:</b>", styles["Normal"]),
+         Paragraph(f"<b>${formato_numero(total)}</b>", styles["Normal"])],
     ]
 
     tabla_totales = Table(totales, colWidths=[13*cm, 4*cm])
@@ -735,14 +748,16 @@ def factura_pdf(request, pk):
         ("ALIGN", (1, 0), (1, -1), "RIGHT"),
         ("FONTNAME", (0, 0), (-1, -2), "Helvetica"),
         ("FONTNAME", (0, -1), (-1, -1), "Helvetica-Bold"),
-        ("BACKGROUND", (0, -1), (-1, -1), colors.HexColor("#E8E8E8")),
+        ("BACKGROUND", (0, -1), (-1, -1), colors.HexColor("#F2F2F2")),  # Fondo gris en total final
         ("LINEABOVE", (0, -1), (-1, -1), 1, colors.black),
         ("FONTSIZE", (0, 0), (-1, -1), 10),
         ("TOPPADDING", (0, 0), (-1, -1), 6),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
     ]))
+
     elements.append(tabla_totales)
     elements.append(Spacer(1, 16))
+
 
     # --- Footer condiciones ---
     def footer(canvas, doc):
