@@ -16,8 +16,8 @@ class OrdenCompra(models.Model):
 
     tipo_documento = models.CharField(
         max_length=20,
-        choices=TIPO_CHOICES,
-        default="COTIZACIÓN",
+        choices=[("COTIZACIÓN", "COTIZACIÓN"), ("FACTURA", "FACTURA")],
+        default="COTIZACIÓN"
     )
 
 
