@@ -75,33 +75,34 @@ WSGI_APPLICATION = 'mvt_django.wsgi.application'
 
 # --- Configuración de base de datos PostgreSQL (Render) ---
 # --- Configuración de base de datos ---
-import dj_database_url
+# --- Configuración de base de datos (Render + Local) ---
 import os
+import dj_database_url
+
+print(dir(dj_database_url))  # Muestra los atributos disponibles
+
+
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-if DATABASE_URL:
-    # 🔹 Para Render (usa PostgreSQL)
+# Si Render provee DATABASE_URL, se usa PostgreSQL (persistente)
+# Si no, se usa SQLite local (para desarrollo)
+if os.environ.get("DATABASE_URL"):
     DATABASES = {
         'default': dj_database_url.config(
-            default=DATABASE_URL,
+            default=os.environ["DATABASE_URL"],
             conn_max_age=600,
             ssl_require=True
         )
     }
 else:
-    # 🔹 Para tu entorno local (usa SQLite)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
-
 
 
 
