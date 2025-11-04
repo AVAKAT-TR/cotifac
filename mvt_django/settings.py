@@ -84,7 +84,7 @@ print(dir(dj_database_url))  # Muestra los atributos disponibles
 
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Si Render provee DATABASE_URL, se usa PostgreSQL (persistente)
 # Si no, se usa SQLite local (para desarrollo)
@@ -108,7 +108,7 @@ else:
 
 
 
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 #---------------ABAJO ESTA LA QUE USABA CON SQLITE FUNCIONANDO ----------------#
