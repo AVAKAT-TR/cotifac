@@ -18,8 +18,8 @@ try:
     User = get_user_model()
 
     admin_username = "admin"
-    admin_email = "admin@example.com"
-    admin_password = "Admin2024"  # 🔐 puedes cambiarlo
+    admin_email = "pablotr54k1@gmail.com"
+    admin_password = "PJTR"  # 🔐 puedes cambiarlo
 
     if not User.objects.filter(username=admin_username).exists():
         User.objects.create_superuser(
