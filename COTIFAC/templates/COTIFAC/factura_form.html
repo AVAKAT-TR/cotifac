@@ -113,6 +113,7 @@
     // --- Mostrar en pantalla ---
     document.getElementById("subtotal").value = formatNumber(subtotal);
     document.getElementById("descuento_monto").value = formatNumber(montoDescuento);
+    document.getElementById("neto_con_descuento").value = formatNumber(subtotalConDescuento);
     document.getElementById("iva").value = formatNumber(iva);
     document.getElementById("id_monto_total").value = formatNumber(valorFinal);
     document.getElementById("monto_total_hidden").value = valorFinal;
@@ -205,6 +206,10 @@
       <tr>
         <td>Monto de descuento:</td>
         <td><input type="text" id="descuento_monto" readonly></td>
+      </tr>
+      <tr>
+      <td>Valor neto con descuento:</td>
+        <td><input type="text" id="neto_con_descuento" readonly></td>
       </tr>
       <tr>
         <td>IVA (19%):</td>
