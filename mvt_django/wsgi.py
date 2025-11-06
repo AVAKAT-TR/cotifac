@@ -37,7 +37,7 @@ except Exception as e:
 try:
     from django.core.management import call_command
     # Si tu archivo se llama data.json, usa eso.
-    call_command('loaddata', 'cotifac/fixtures/data.json')
+    call_command('loaddata', 'COTIFAC/fixtures/data.json')
     print("✅ Datos iniciales cargados desde fixtures/data.json.")
 except Exception as e:
     print(f"⚠️ Error cargando fixtures: {e}")
