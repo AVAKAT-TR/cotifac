@@ -1,4 +1,3 @@
-['Any', 'Callable', 'DBConfig', 'DEFAULT_ENV', 'Dict', 'ENGINE_SCHEMES', 'Engine', 'List', 'OptionType', 'Optional', 'ParseError', 'PostprocessCallable', 'TypedDict', 'Union', 'UnknownSchemeError', '__annotations__', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', '_convert_to_settings', '_parse_option_values', '_parse_value', 'apply_current_schema', 'apply_ssl_ca', 'config', 'default_postprocess', 'default_to_in_memory_db', 'logging', 'os', 'parse', 'register', 'stringify_port', 'urlparse']
 [
 {
   "model": "COTIFAC.producto",
@@ -34,8 +33,8 @@
   "model": "COTIFAC.producto",
   "pk": 4,
   "fields": {
-    "tipo": "COJÕN LECTOR",
-    "codigo": "PIQU… BLANCO",
+    "tipo": "COJ√çN LECTOR",
+    "codigo": "PIQU√â BLANCO",
     "medida": "65x65",
     "precio": "150000"
   }
@@ -44,8 +43,8 @@
   "model": "COTIFAC.producto",
   "pk": 5,
   "fields": {
-    "tipo": "COJÕN LECTOR",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "COJ√çN LECTOR",
+    "codigo": "PIQU√â CRUDO",
     "medida": "65x65",
     "precio": "150000"
   }
@@ -54,7 +53,7 @@
   "model": "COTIFAC.producto",
   "pk": 6,
   "fields": {
-    "tipo": "COJÕN LECTOR",
+    "tipo": "COJ√çN LECTOR",
     "codigo": "CHIC",
     "medida": "65x65",
     "precio": "150000"
@@ -64,7 +63,7 @@
   "model": "COTIFAC.producto",
   "pk": 7,
   "fields": {
-    "tipo": "COJÕN LECTOR",
+    "tipo": "COJ√çN LECTOR",
     "codigo": "NIVEO",
     "medida": "65x65",
     "precio": "150000"
@@ -124,7 +123,7 @@
   "model": "COTIFAC.producto",
   "pk": 13,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "PREMIUM",
     "medida": "1PLAZA 1.20x2.00",
     "precio": "375000"
@@ -134,7 +133,7 @@
   "model": "COTIFAC.producto",
   "pk": 14,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "PREMIUM",
     "medida": "1PLAZA 1.40x2.00",
     "precio": "440000"
@@ -144,7 +143,7 @@
   "model": "COTIFAC.producto",
   "pk": 15,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "PREMIUM",
     "medida": "1.5PLAZAS 1.60x2.00",
     "precio": "490000"
@@ -154,7 +153,7 @@
   "model": "COTIFAC.producto",
   "pk": 16,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "PREMIUM",
     "medida": "2Plazas 2.20x2.00",
     "precio": "690000"
@@ -164,7 +163,7 @@
   "model": "COTIFAC.producto",
   "pk": 17,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "PREMIUM",
     "medida": "QUEEN 2.40x2.20",
     "precio": "810000"
@@ -174,7 +173,7 @@
   "model": "COTIFAC.producto",
   "pk": 18,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "PREMIUM",
     "medida": "KING 2.60x2.20",
     "precio": "900000"
@@ -184,7 +183,7 @@
   "model": "COTIFAC.producto",
   "pk": 19,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "PREMIUM",
     "medida": "SUPERKING 2.70x2.40",
     "precio": "995000"
@@ -194,7 +193,7 @@
   "model": "COTIFAC.producto",
   "pk": 20,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "OBERHAUS",
     "medida": "2Plazas 2.20x2.00",
     "precio": "767000"
@@ -204,7 +203,7 @@
   "model": "COTIFAC.producto",
   "pk": 21,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "OBERHAUS",
     "medida": "QUEEN 2.40x2.20",
     "precio": "880000"
@@ -214,7 +213,7 @@
   "model": "COTIFAC.producto",
   "pk": 22,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "OBERHAUS",
     "medida": "KING 2.60x2.20",
     "precio": "970000"
@@ -224,7 +223,7 @@
   "model": "COTIFAC.producto",
   "pk": 23,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "OBERHAUS",
     "medida": "SUPERKING 2.70x2.40",
     "precio": "1045000"
@@ -234,7 +233,7 @@
   "model": "COTIFAC.producto",
   "pk": 24,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "HIS & HERS",
     "medida": "2Plazas 2.20x2.00",
     "precio": "615000"
@@ -244,7 +243,7 @@
   "model": "COTIFAC.producto",
   "pk": 25,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "HIS & HERS",
     "medida": "QUEEN 2.40x2.20",
     "precio": "720000"
@@ -254,7 +253,7 @@
   "model": "COTIFAC.producto",
   "pk": 26,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "HIS & HERS",
     "medida": "KING 2.60x2.20",
     "precio": "815000"
@@ -264,7 +263,7 @@
   "model": "COTIFAC.producto",
   "pk": 27,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "HIS & HERS",
     "medida": "SUPERKING 2.70x2.40",
     "precio": "895000"
@@ -274,7 +273,7 @@
   "model": "COTIFAC.producto",
   "pk": 28,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "VERANO",
     "medida": "1PLAZA 1.20x2.00",
     "precio": "250000"
@@ -284,7 +283,7 @@
   "model": "COTIFAC.producto",
   "pk": 29,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "VERANO",
     "medida": "1PLAZA 1.40x2.00",
     "precio": "290000"
@@ -294,7 +293,7 @@
   "model": "COTIFAC.producto",
   "pk": 30,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "VERANO",
     "medida": "1.5PLAZAS 1.60x2.00",
     "precio": "330000"
@@ -304,7 +303,7 @@
   "model": "COTIFAC.producto",
   "pk": 31,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "VERANO",
     "medida": "2Plazas 2.20x2.00",
     "precio": "460000"
@@ -314,7 +313,7 @@
   "model": "COTIFAC.producto",
   "pk": 32,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "VERANO",
     "medida": "QUEEN 2.40x2.20",
     "precio": "540000"
@@ -324,7 +323,7 @@
   "model": "COTIFAC.producto",
   "pk": 33,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "VERANO",
     "medida": "KING 2.60x2.20",
     "precio": "605000"
@@ -334,7 +333,7 @@
   "model": "COTIFAC.producto",
   "pk": 34,
   "fields": {
-    "tipo": "PLUM”N",
+    "tipo": "PLUM√ìN",
     "codigo": "VERANO",
     "medida": "SUPERKING 2.70x2.40",
     "precio": "690000"
@@ -344,7 +343,7 @@
   "model": "COTIFAC.producto",
   "pk": 35,
   "fields": {
-    "tipo": "COJÕN DECORATIVO",
+    "tipo": "COJ√çN DECORATIVO",
     "codigo": "VERANO",
     "medida": "50x50",
     "precio": "66000"
@@ -354,7 +353,7 @@
   "model": "COTIFAC.producto",
   "pk": 36,
   "fields": {
-    "tipo": "COJÕN DECORATIVO",
+    "tipo": "COJ√çN DECORATIVO",
     "codigo": "INVIERNO",
     "medida": "50x50",
     "precio": "66000"
@@ -364,8 +363,8 @@
   "model": "COTIFAC.producto",
   "pk": 37,
   "fields": {
-    "tipo": "COJÕN DECORATIVO",
-    "codigo": "OTO—O",
+    "tipo": "COJ√çN DECORATIVO",
+    "codigo": "OTO√ëO",
     "medida": "50x50",
     "precio": "66000"
   }
@@ -374,7 +373,7 @@
   "model": "COTIFAC.producto",
   "pk": 38,
   "fields": {
-    "tipo": "COJÕN DECORATIVO",
+    "tipo": "COJ√çN DECORATIVO",
     "codigo": "PRIMAVERAL",
     "medida": "50x50",
     "precio": "66000"
@@ -434,7 +433,7 @@
   "model": "COTIFAC.producto",
   "pk": 44,
   "fields": {
-    "tipo": "EXTENSI”N SAQUITO",
+    "tipo": "EXTENSI√ìN SAQUITO",
     "codigo": "PATITAS",
     "medida": "NORMAL",
     "precio": "70000"
@@ -444,7 +443,7 @@
   "model": "COTIFAC.producto",
   "pk": 45,
   "fields": {
-    "tipo": "EXTENSI”N SAQUITO",
+    "tipo": "EXTENSI√ìN SAQUITO",
     "codigo": "SIN PATITAS",
     "medida": "NORMAL",
     "precio": "60000"
@@ -455,7 +454,7 @@
   "pk": 46,
   "fields": {
     "tipo": "FUNDA ALMOHADA",
-    "codigo": "BRODERI…",
+    "codigo": "BRODERI√â",
     "medida": "25x40",
     "precio": "20000"
   }
@@ -465,7 +464,7 @@
   "pk": 47,
   "fields": {
     "tipo": "FUNDA ALMOHADA",
-    "codigo": "BRODERI…",
+    "codigo": "BRODERI√â",
     "medida": "30x50",
     "precio": "25000"
   }
@@ -475,7 +474,7 @@
   "pk": 48,
   "fields": {
     "tipo": "FUNDA ALMOHADA",
-    "codigo": "BRODERI…",
+    "codigo": "BRODERI√â",
     "medida": "40x60",
     "precio": "28000"
   }
@@ -485,7 +484,7 @@
   "pk": 49,
   "fields": {
     "tipo": "FUNDA ALMOHADA",
-    "codigo": "BRODERI…",
+    "codigo": "BRODERI√â",
     "medida": "50x70",
     "precio": "36000"
   }
@@ -495,7 +494,7 @@
   "pk": 50,
   "fields": {
     "tipo": "FUNDA ALMOHADA",
-    "codigo": "BRODERI…",
+    "codigo": "BRODERI√â",
     "medida": "50x90",
     "precio": "40000"
   }
@@ -604,7 +603,7 @@
   "model": "COTIFAC.producto",
   "pk": 61,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
+    "tipo": "FUNDA PLUM√ìN",
     "codigo": "DESHILADO",
     "medida": "1PLAZA 1.20x2.00",
     "precio": "90000"
@@ -614,7 +613,7 @@
   "model": "COTIFAC.producto",
   "pk": 62,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
+    "tipo": "FUNDA PLUM√ìN",
     "codigo": "DESHILADO",
     "medida": "1PLAZA 1.40x2.00",
     "precio": "105000"
@@ -624,7 +623,7 @@
   "model": "COTIFAC.producto",
   "pk": 63,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
+    "tipo": "FUNDA PLUM√ìN",
     "codigo": "DESHILADO",
     "medida": "1.5PLAZAS 1.60x2.00",
     "precio": "120000"
@@ -634,7 +633,7 @@
   "model": "COTIFAC.producto",
   "pk": 64,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
+    "tipo": "FUNDA PLUM√ìN",
     "codigo": "DESHILADO",
     "medida": "2Plazas 2.20x2.00",
     "precio": "165000"
@@ -644,7 +643,7 @@
   "model": "COTIFAC.producto",
   "pk": 65,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
+    "tipo": "FUNDA PLUM√ìN",
     "codigo": "DESHILADO",
     "medida": "QUEEN 2.40x2.20",
     "precio": "198000"
@@ -654,7 +653,7 @@
   "model": "COTIFAC.producto",
   "pk": 66,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
+    "tipo": "FUNDA PLUM√ìN",
     "codigo": "DESHILADO",
     "medida": "KING 2.60x2.20",
     "precio": "214000"
@@ -664,7 +663,7 @@
   "model": "COTIFAC.producto",
   "pk": 67,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
+    "tipo": "FUNDA PLUM√ìN",
     "codigo": "DESHILADO",
     "medida": "SUPERKING 2.70x2.40",
     "precio": "242000"
@@ -674,8 +673,8 @@
   "model": "COTIFAC.producto",
   "pk": 68,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "FP PIQU… BLANCO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "FP PIQU√â BLANCO",
     "medida": "1PLAZA 1.20x2.00",
     "precio": "90000"
   }
@@ -684,8 +683,8 @@
   "model": "COTIFAC.producto",
   "pk": 69,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "FP PIQU… BLANCO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "FP PIQU√â BLANCO",
     "medida": "1PLAZA 1.40x2.00",
     "precio": "105000"
   }
@@ -694,8 +693,8 @@
   "model": "COTIFAC.producto",
   "pk": 70,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "FP PIQU… BLANCO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "FP PIQU√â BLANCO",
     "medida": "1.5PLAZAS 1.60x2.00",
     "precio": "120000"
   }
@@ -704,8 +703,8 @@
   "model": "COTIFAC.producto",
   "pk": 71,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "FP PIQU… BLANCO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "FP PIQU√â BLANCO",
     "medida": "2Plazas 2.20x2.00",
     "precio": "165000"
   }
@@ -714,8 +713,8 @@
   "model": "COTIFAC.producto",
   "pk": 72,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "FP PIQU… BLANCO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "FP PIQU√â BLANCO",
     "medida": "QUEEN 2.40x2.20",
     "precio": "198000"
   }
@@ -724,8 +723,8 @@
   "model": "COTIFAC.producto",
   "pk": 73,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "FP PIQU… BLANCO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "FP PIQU√â BLANCO",
     "medida": "KING 2.60x2.20",
     "precio": "214000"
   }
@@ -734,8 +733,8 @@
   "model": "COTIFAC.producto",
   "pk": 74,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "FP PIQU… BLANCO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "FP PIQU√â BLANCO",
     "medida": "SUPERKING 2.70x2.40",
     "precio": "242000"
   }
@@ -744,8 +743,8 @@
   "model": "COTIFAC.producto",
   "pk": 75,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "PIQU√â CRUDO",
     "medida": "1PLAZA 1.20x2.00",
     "precio": "90000"
   }
@@ -754,8 +753,8 @@
   "model": "COTIFAC.producto",
   "pk": 76,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "PIQU√â CRUDO",
     "medida": "1PLAZA 1.40x2.00",
     "precio": "105000"
   }
@@ -764,8 +763,8 @@
   "model": "COTIFAC.producto",
   "pk": 77,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "PIQU√â CRUDO",
     "medida": "1.5PLAZAS 1.60x2.00",
     "precio": "120000"
   }
@@ -774,8 +773,8 @@
   "model": "COTIFAC.producto",
   "pk": 78,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "PIQU√â CRUDO",
     "medida": "2Plazas 2.20x2.00",
     "precio": "165000"
   }
@@ -784,8 +783,8 @@
   "model": "COTIFAC.producto",
   "pk": 79,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "PIQU√â CRUDO",
     "medida": "QUEEN 2.40x2.20",
     "precio": "198000"
   }
@@ -794,8 +793,8 @@
   "model": "COTIFAC.producto",
   "pk": 80,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "PIQU√â CRUDO",
     "medida": "KING 2.60x2.20",
     "precio": "214000"
   }
@@ -804,8 +803,8 @@
   "model": "COTIFAC.producto",
   "pk": 81,
   "fields": {
-    "tipo": "FUNDA PLUM”N",
-    "codigo": "PIQU… CRUDO",
+    "tipo": "FUNDA PLUM√ìN",
+    "codigo": "PIQU√â CRUDO",
     "medida": "SUPERKING 2.70x2.40",
     "precio": "242000"
   }
@@ -814,7 +813,7 @@
   "model": "COTIFAC.producto",
   "pk": 82,
   "fields": {
-    "tipo": "FUNDA PLUM”N BEB…",
+    "tipo": "FUNDA PLUM√ìN BEB√â",
     "codigo": "DESHILADO",
     "medida": "0.80x1.20",
     "precio": "55000"
@@ -824,7 +823,7 @@
   "model": "COTIFAC.producto",
   "pk": 83,
   "fields": {
-    "tipo": "FUNDA PLUM”N BEB…",
+    "tipo": "FUNDA PLUM√ìN BEB√â",
     "codigo": "DESHILADO",
     "medida": "0.80x1.40",
     "precio": "60000"
@@ -834,7 +833,7 @@
   "model": "COTIFAC.producto",
   "pk": 84,
   "fields": {
-    "tipo": "PLUM”N BEB…",
+    "tipo": "PLUM√ìN BEB√â",
     "codigo": "DUVET",
     "medida": "1.20x0.80",
     "precio": "150000"
@@ -844,7 +843,7 @@
   "model": "COTIFAC.producto",
   "pk": 85,
   "fields": {
-    "tipo": "PLUM”N BEB…",
+    "tipo": "PLUM√ìN BEB√â",
     "codigo": "DUVET",
     "medida": "1.40x0.80",
     "precio": "175000"
@@ -934,7 +933,7 @@
   "model": "COTIFAC.producto",
   "pk": 94,
   "fields": {
-    "tipo": "MOIS…S",
+    "tipo": "MOIS√âS",
     "codigo": "DUVET",
     "medida": "50x70",
     "precio": "70000"
@@ -944,7 +943,7 @@
   "model": "COTIFAC.producto",
   "pk": 95,
   "fields": {
-    "tipo": "MOIS…S",
+    "tipo": "MOIS√âS",
     "codigo": "DUVET",
     "medida": "50x80",
     "precio": "80000"
