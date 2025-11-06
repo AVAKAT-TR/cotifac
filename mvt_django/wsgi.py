@@ -4,7 +4,7 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mvt_django.settings')
 application = get_wsgi_application()
 
-# --- Auto aplicar migraciones en Render ---
+# --- Ejecutar migraciones automáticamente en Render ---
 try:
     from django.core.management import call_command
     call_command("migrate", interactive=False)
@@ -12,14 +12,14 @@ try:
 except Exception as e:
     print(f"⚠️ Error aplicando migraciones automáticamente: {e}")
 
-# --- Auto crear superusuario si no existe ---
+# --- Crear superusuario automáticamente (solo si no existe) ---
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
 
     admin_username = "admin"
-    admin_email = "pablotr54k1@gmail.com"
-    admin_password = "PJTR"  # 🔐 puedes cambiarlo
+    admin_email = "admin@example.com"
+    admin_password = "Admin2024"
 
     if not User.objects.filter(username=admin_username).exists():
         User.objects.create_superuser(
@@ -32,3 +32,12 @@ try:
         print(f"ℹ️ Superusuario '{admin_username}' ya existe.")
 except Exception as e:
     print(f"⚠️ Error creando superusuario automáticamente: {e}")
+
+# --- Cargar datos iniciales (fixtures/productos.json o fixtures/data.json) ---
+try:
+    from django.core.management import call_command
+    # Si tu archivo se llama data.json, usa eso.
+    call_command('loaddata', 'fixtures/data.json')
+    print("✅ Datos iniciales cargados desde fixtures/data.json.")
+except Exception as e:
+    print(f"⚠️ Error cargando fixtures: {e}")
