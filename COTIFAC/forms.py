@@ -1,6 +1,7 @@
 from django import forms
 from .models import OrdenCompra, Item, Producto
 from django.forms import inlineformset_factory
+from .models import OrdenCompra, Item
 
 
 # --------------------
@@ -59,3 +60,27 @@ ItemFormSet = inlineformset_factory(
     extra=5,          # cantidad de filas vacías
     can_delete=False
 )
+
+
+
+
+class OrdenFacturaForm(forms.ModelForm):
+    class Meta:
+        model = OrdenCompra
+        fields = [
+            'comprador',
+            'razon_social',
+            'rut',
+            'giro',
+            'direccion',
+            'comuna',
+            'ciudad',
+            'email',
+            'fecha_emision',
+            'fecha_vencimiento',
+            'descuento',
+        ]
+        widgets = {
+            'fecha_emision': forms.DateInput(attrs={'type': 'date'}),
+            'fecha_vencimiento': forms.DateInput(attrs={'type': 'date'}),
+        }
