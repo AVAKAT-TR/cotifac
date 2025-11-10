@@ -6,15 +6,15 @@
   <title>COTIFAC</title>
   <style>
     body { font-family: Arial, sans-serif; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f2f2f2; }
+    table { background-color: #444f58; border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { color: #f0f5f1; border: 2px solid #232623; padding: 8px; text-align: center; }
+    th { background-color: #615c5c; }
 
     /* Colores para las filas */
     .fila-pendiente { background-color: #fff3cd; }  /* amarillo suave */
     .fila-aprobada { background-color: #d4edda; }   /* verde suave */
     .fila-rechazada { background-color: #f8d7da; }  /* rojo suave */
-
+s
     .estado { font-weight: bold; }
     .pendiente { color: orange; }
     .aprobada { color: green; }
@@ -34,14 +34,24 @@
       }
     button:hover { background-color: #2a5052; }
       
+
+    .contenedor-boton {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* si quieres también centrar verticalmente */
+        height: 100px;       /* ajusta según tu layout */
+      }
+
+
+
     .Titulo-Principal{
-      font-size: 55px;
+      font-size: 75px;
       text-align: center;
     }
 
 
     .Nuevafactura{
-      margin-top: 20px;
+      margin-top: 30px;
       padding: 12px 22px;
       font-size: 20px;
       background-color: #2075b1;
@@ -56,40 +66,99 @@
 
 
         .FAC {
-      color: red;
+      color: rgb(0, 0, 0);
     }
 
     .COTI {
       color: white;
     }
-    
-  </style>
+    body{
+      background-color: #232623;
+    }
+
+    .acciones{
+      background-color: #6283a2;
+    }
+
+      /* probando efectos en botones jeje */
+    /*
+    .Titulo-Principal{
+      transform: scale(1);
+  transition: transform 0.2s ease;     
+    }
+
+    .Titulo-Principal:hover {
+  transform: scale(1.05);
+    }
+    */
+
+
+    .Titulo-Principal {
+  background-color: none;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.Titulo-Principal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+  transform: skewX(-20deg);
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+
+
+
+</style>
 </head>
 <body>
 
 
-  <div class="Titulo-Principal">
-    <!-- 
-    <h1>COTIFAC :v</h1>
-    -->
-      
+<div class="contenedor-boton">
   <a href="{% url 'orden_list' %}">
     <button class="Titulo-Principal">
       <span class="COTI">COTI</span><span class="FAC">FAC</span> :V
     </button>
   </a>
-  </div>
+</div>
+
+
+<div style="display: flex; align-items: center; gap: 12px; padding: 8px 16px; margin-right: 75% ; background-color: #F4F6F8; border-radius: 6px;">
+  <span style="font-weight: 500; color: #1F2937;">👤 Usuario:</span>
+  <span style="font-weight: 600; color: #2563EB;">{{ request.user.username }}</span>
+  <a href="{% url 'logout' %}" style="padding: 6px 12px; background-color: #EF4444; color: white; border-radius: 4px; text-decoration: none; font-weight: 500;">
+    Cerrar sesión
+  </a>
+</div>
 
 
 
-
-
-  <p>
-    👤 Usuario: {{ request.user.username }} |
-    <a href="{% url 'logout' %}">Cerrar sesión</a>
-  </p>
+<div style="margin-top: 15px;">
 
   <a class="Nuevafactura" href="{% url 'factura_create' %}">✚ Nueva Factura</a>
+</div>
+
 
   <table>
     <tr>
@@ -109,7 +178,7 @@
       <td>{{ factura.fecha_emision }}</td>
       <td>${{ factura.monto_total|formato_moneda }}</td>
       <td>{{ factura.tipo_documento }}</td>
-      <td>
+      <td class="acciones">
         <a href="{% url 'factura_pdf' factura.id %}">📄 PDF</a> |
         <a href="{% url 'factura_delete' factura.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta factura?');">🗑️ Eliminar</a>
 

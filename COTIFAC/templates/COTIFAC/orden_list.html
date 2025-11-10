@@ -6,9 +6,9 @@
   <title>COTIFAC</title>
   <style>
     body { font-family: Arial, sans-serif; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f2f2f2; }
+    table {background-color: #617d8a; border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { color: #f0f5f1; border: 1px solid #273137; padding: 8px; text-align: center; }
+    th { background-color: #273137; }
 
     /* Colores para las filas */
     .fila-pendiente { background-color: #fff3cd; }  /* amarillo suave */
@@ -35,7 +35,7 @@
     button:hover { background-color: #2a5052; }
       
     .Titulo-Principal{
-      font-size: 55px;
+      font-size: 75px;
       text-align: center;
     }
 
@@ -55,49 +55,115 @@
 
 
     .COTI {
-      color: red;
+      color: rgb(0, 0, 0);
     }
 
     .FAC {
       color: white;
     }
 
+     body{
+      background-color: #79909b;
+    }
+
+    .acciones{
+      background-color: #6283a2;
+    }
+    
+
+        .contenedor-boton {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* si quieres también centrar verticalmente */
+        height: 100px;       /* ajusta según tu layout */
+      }
+
+
+
+          /* probando efectos en botones jeje */
+    /*
+    .Titulo-Principal{
+      transform: scale(1);
+  transition: transform 0.2s ease;     
+    }
+
+    .Titulo-Principal:hover {
+  transform: scale(1.05);
+    }
+    */
+
+
+
+
+
+      .Titulo-Principal {
+    background-color: none;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+  }
+
+  .Titulo-Principal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+    transform: skewX(-20deg);
+    animation: shine 2s infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -75%;
+    }
+    100% {
+      left: 125%;
+    }
+}
   </style>
 </head>
 <body>
 
-
-  <div class="Titulo-Principal">
-    <!-- 
-    <h1>COTIFAC :v</h1>
-    -->
+<div class="contenedor-boton">
   <a href="{% url 'factura_list' %}">
     <button class="Titulo-Principal">
       <span class="COTI">COTI</span><span class="FAC">FAC</span> :V
     </button>
   </a>
-
-<!--
-  <button class="Titulo-Principal">
-    <span  class="COTI">COTI</span><span class="FAC">FAC</span> :V
-  </button>
--->
-
-  </div>
+</div>
 
 
 
 
+<div style="display: flex; align-items: center; gap: 12px; padding: 8px 16px; margin-right: 75% ; background-color: #F4F6F8; border-radius: 6px;">
+  <span style="font-weight: 500; color: #1F2937;">👤 Usuario:</span>
+  <span style="font-weight: 600; color: #2563EB;">{{ request.user.username }}</span>
+  <a href="{% url 'logout' %}" style="padding: 6px 12px; background-color: #EF4444; color: white; border-radius: 4px; text-decoration: none; font-weight: 500;">
+    Cerrar sesión
+  </a>
+</div>
 
 
 
 
-  <p>
-    👤 Usuario: {{ request.user.username }} |
-    <a href="{% url 'logout' %}">Cerrar sesión</a>
-  </p>
+
+
+<div style="margin-top: 15px;">
 
   <a class="NuevaOrden" href="{% url 'orden_create' %}">✚ Nueva Cotización</a>
+</div>
+
+
 
   <table>
     <tr>
@@ -117,7 +183,7 @@
       <td>{{ orden.fecha_emision }}</td>
       <td>${{ orden.monto_total|formato_moneda }}</td>
       <td>{{ orden.tipo_documento }}</td>
-      <td>
+      <td class="acciones">
         <a href="{% url 'orden_pdf' orden.id %}">📄 PDF</a> |
         <a href="{% url 'orden_delete' orden.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta orden?');">🗑️ Eliminar</a>
 

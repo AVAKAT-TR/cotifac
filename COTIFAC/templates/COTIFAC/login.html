@@ -14,6 +14,49 @@
     .FL{font-size: 10px;}
     
   .COTI{color: black;}
+
+  
+
+
+
+    html {
+      position: relative;
+      background-color: #001F5C;
+      overflow: hidden;
+      color: white;
+    }
+
+    html::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 200%;
+      height: 100vh;
+      background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.08) 50%,
+        transparent 70%
+      );
+      transform: skewX(-20deg);
+      animation: shine-body 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shine-body {
+      0% {
+        left: -150%;
+      }
+      100% {
+        left: 150%;
+      }
+    }
+
+
+
+
+
   
   </style>
 
@@ -24,7 +67,7 @@
 
  
   <div style="justify-content:center ; display: flex; align-items:baseline; gap: 10px;">
-    <h1>COTIFAC</h1><h6>For LaCasaDeLosGansos</h6>
+    <h1 class="">COTIFAC</h1><h6>For LaCasaDeLosGansos</h6>
   </div>
 
   <h2>🔐 Iniciar Sesión</h2>
