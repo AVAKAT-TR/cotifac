@@ -669,7 +669,7 @@ def factura_pdf(request, pk):
     elements.append(Paragraph("Plumones y almohadas", subtitle))
     elements.append(Spacer(1, 12))
 
-    titulo_factura = Paragraph(f"<b>FACTURA N° {orden.id:06d}</b>", styles["Normal"])
+    titulo_factura = Paragraph(f"<b>PROFORMA N° {orden.id:06d}</b>", styles["Normal"])
     tabla_titulo = Table([[titulo_factura]], colWidths=[17*cm])
     tabla_titulo.setStyle(TableStyle([
         ("ALIGN", (0, 0), (-1, -1), "CENTER"),
