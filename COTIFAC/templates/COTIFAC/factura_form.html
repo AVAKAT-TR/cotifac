@@ -150,6 +150,37 @@
     {% csrf_token %}
 
     <p>Comprador: {{ form.comprador }}</p>
+    <h3>Datos del Cliente</h3>
+<table>
+  <tr>
+    <td><label for="razon_social">Razón social / Nombre:</label></td>
+    <td><input type="text" id="razon_social" name="razon_social" required></td>
+  </tr>
+  <tr>
+    <td><label for="rut">RUT:</label></td>
+    <td><input type="text" id="rut" name="rut" placeholder="12.345.678-9" required></td>
+  </tr>
+  <tr>
+    <td><label for="giro">Giro comercial:</label></td>
+    <td><input type="text" id="giro" name="giro"></td>
+  </tr>
+  <tr>
+    <td><label for="direccion">Dirección:</label></td>
+    <td><input type="text" id="direccion" name="direccion" required></td>
+  </tr>
+  <tr>
+    <td><label for="comuna">Comuna:</label></td>
+    <td><input type="text" id="comuna" name="comuna" required></td>
+  </tr>
+  <tr>
+    <td><label for="ciudad">Ciudad:</label></td>
+    <td><input type="text" id="ciudad" name="ciudad" required></td>
+  </tr>
+  <tr>
+    <td><label for="email">Correo electrónico:</label></td>
+    <td><input type="email" id="email" name="email" placeholder="cliente@correo.cl"></td>
+  </tr>
+</table>
     <p>Fecha emisión: {{ form.fecha_emision }}</p>
     <p>Fecha envío: {{ form.fecha_vencimiento }}</p>
 
