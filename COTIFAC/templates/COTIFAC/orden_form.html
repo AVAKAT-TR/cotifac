@@ -41,6 +41,266 @@
       cursor: pointer;
     }
     button:hover { background-color: #2a5052; }
+
+
+
+
+
+
+    .contenedor-boton {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* si quieres también centrar verticalmente */
+        height: 100px;       /* ajusta según tu layout */
+      }
+
+    .Titulo-Principal {
+  background-color: none;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.Titulo-Principal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+  transform: skewX(-20deg);
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+
+body{
+  background-color: ;
+}
+
+
+
+/*usar el required   en el dato que quieres que camie de color*/
+
+
+/* opcional: efecto suave */
+input {
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+input {
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(70, 179, 70, 0.4);
+}
+
+
+
+
+/*testeo de estilos*/
+
+
+
+
+
+  /* ---------------------------
+     ESTILO GENERAL DE LA PÁGINA
+  ----------------------------*/
+
+
+  html{
+    background-color:#587378 ;
+  }
+  body {
+    background-color: #6e8289; /* fondo gris azulado similar al dashboard */
+    font-family: 'Segoe UI', sans-serif;
+    color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+  }
+
+  /* ---------------------------
+     TÍTULO PRINCIPAL
+  ----------------------------*/
+  h1 {
+    background-color: ; /* verde petróleo oscuro como el logo */
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+  }
+
+  /* ---------------------------
+     FORMULARIO PRINCIPAL
+  ----------------------------*/
+  form {
+    width: 100%; /* usar todo el ancho de la pantalla */
+    background-color: #587378; /* tono intermedio entre el fondo y el header */
+    border-radius: 12px;
+    padding: 30px;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Espaciado entre párrafos */
+  p {
+    margin: 12px 0;
+  }
+
+  /* ---------------------------
+     CAMPOS DE ENTRADA Y SELECT
+  ----------------------------*/
+  input, select {
+    border: none;
+    padding: 10px 12px;
+    border-radius: 2px;
+    width: 100%;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  /* ---------------------------
+     TABLAS DE PRODUCTOS
+  ----------------------------*/
+  table {
+    width: 100%; /* ocupar todo el ancho */
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-sizing: border-box;
+  }
+
+  /* Encabezados de tabla */
+  th {
+    background-color: #325b5c; /* mismo color que el header */
+    color: #ffffff;
+    text-align: left;
+    padding: 10px;
+    font-weight: normal;
+  }
+
+  /* Celdas de tabla */
+  td {
+    background-color: #858282;
+    color: #333;
+    padding: 10px;
+  }
+
+  /* Alternar color de filas para mejorar legibilidad */
+  tr.item-row:nth-child(even) td {
+    background-color: #a3a8aa;
+  }
+
+  /* Fila especial para productos manuales */
+  tr.especial td {
+    background-color: #dbe5e7;
+    font-weight: 500;
+  }
+
+  /* Tabla de totales */
+  #totales td {
+    background-color: #e3e9ea;
+    padding: 12px;
+  }
+
+  /* ---------------------------
+     BOTONES
+  ----------------------------*/
+  button {
+    background-color: #2f7a4d; /* verde tipo “Aprobar” */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    margin-top: 25px;
+    width: 100%; /* botones de ancho completo */
+    text-transform: uppercase;
+    font-size: 15px;
+  }
+
+  /* Efecto hover */
+  button:hover {
+    background-color: #3e948a;
+  }
+
+  /* Botón rojo de “Volver” */
+  button[style*="background-color: red"] {
+    background-color: #c44747 !important;
+  }
+
+  button[style*="background-color: red"]:hover {
+    background-color: #e25b5b !important;
+  }
+
+  /* Enlace dentro del botón “Volver” */
+  button a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* ---------------------------
+     SUBTÍTULOS DE SECCIÓN
+  ----------------------------*/
+  h3 {
+    background-color: #3c3e3e;
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 35px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ---------------------------
+     RESPONSIVIDAD BÁSICA
+  ----------------------------*/
+  @media (max-width: 768px) {
+    form {
+      padding: 15px;
+    }
+
+    th, td {
+      font-size: 13px;
+      padding: 8px;
+    }
+
+    button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+
+
+
+
+
+
+
   </style>
 
 
@@ -147,16 +407,193 @@
 
 
 </head>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Detectar todas las filas de la tabla de productos
+  const filas = document.querySelectorAll("tr");
+
+  filas.forEach(fila => {
+    // Campos de producto normal
+    const selectProducto = fila.querySelector("select[name*='producto']");
+    const inputCantidad = fila.querySelector("input[name*='cantidad']");
+    const inputPrecio = fila.querySelector("input[name*='precio']");
+
+    // Campos de producto especial (descripcion_tipo_X)
+    const inputDescripcion = fila.querySelector("input[name*='especial_tipo_']");
+    const inputEspCantidad = fila.querySelector("input[name*='especial_cantidad_']");
+    const inputEspPrecio = fila.querySelector("input[name*='especial_precio_']");
+
+    // Función para actualizar colores de una fila
+    const actualizarColores = () => {
+      // 🔹 PRODUCTOS NORMALES
+      if (selectProducto) {
+        const productoSeleccionado = selectProducto.value && selectProducto.value !== "-------";
+
+        // cantidad
+        if (productoSeleccionado && inputCantidad) {
+          if (inputCantidad.value.trim() === "") {
+            inputCantidad.style.backgroundColor = "#F80000"; // rojo suave
+            inputCantidad.style.borderColor = "#ff4444";
+          } else {
+            inputCantidad.style.backgroundColor = "#e7f7e7"; // verde suave
+            inputCantidad.style.borderColor = "#46b346";
+          }
+        } else if (inputCantidad) {
+          inputCantidad.style.backgroundColor = "";
+          inputCantidad.style.borderColor = "";
+        }
+
+        // precio
+        if (productoSeleccionado && inputPrecio) {
+          if (inputPrecio.value.trim() === "") {
+            inputPrecio.style.backgroundColor = "#ffe5e5";
+            inputPrecio.style.borderColor = "#ff4444";
+          } else {
+            inputPrecio.style.backgroundColor = "#e7f7e7";
+            inputPrecio.style.borderColor = "#46b346";
+          }
+        } else if (inputPrecio) {
+          inputPrecio.style.backgroundColor = "";
+          inputPrecio.style.borderColor = "";
+        }
+      }
+
+      // 🔹 PRODUCTOS ESPECIALES
+      if (inputDescripcion) {
+        const hayDescripcion = inputDescripcion.value.trim() !== "";
+
+        // cantidad
+        if (hayDescripcion && inputEspCantidad) {
+          if (inputEspCantidad.value.trim() === "") {
+            inputEspCantidad.style.backgroundColor = "#ffe5e5";
+            inputEspCantidad.style.borderColor = "#ff4444";
+          } else {
+            inputEspCantidad.style.backgroundColor = "#e7f7e7";
+            inputEspCantidad.style.borderColor = "#46b346";
+          }
+        } else if (inputEspCantidad) {
+          inputEspCantidad.style.backgroundColor = "";
+          inputEspCantidad.style.borderColor = "";
+        }
+
+        // precio
+        if (hayDescripcion && inputEspPrecio) {
+          if (inputEspPrecio.value.trim() === "") {
+            inputEspPrecio.style.backgroundColor = "#ffe5e5";
+            inputEspPrecio.style.borderColor = "#ff4444";
+          } else {
+            inputEspPrecio.style.backgroundColor = "#e7f7e7";
+            inputEspPrecio.style.borderColor = "#46b346";
+          }
+        } else if (inputEspPrecio) {
+          inputEspPrecio.style.backgroundColor = "";
+          inputEspPrecio.style.borderColor = "";
+        }
+      }
+    };
+
+    // Eventos de actualización
+    if (selectProducto) selectProducto.addEventListener("change", actualizarColores);
+    if (inputCantidad) inputCantidad.addEventListener("input", actualizarColores);
+    if (inputPrecio) inputPrecio.addEventListener("input", actualizarColores);
+
+    if (inputDescripcion) inputDescripcion.addEventListener("input", actualizarColores);
+    if (inputEspCantidad) inputEspCantidad.addEventListener("input", actualizarColores);
+    if (inputEspPrecio) inputEspPrecio.addEventListener("input", actualizarColores);
+
+    // Llamar al cargar la página
+    actualizarColores();
+  });
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // selecciona todos los inputs de descripción de productos especiales
+    const descripcionInputs = document.querySelectorAll("input[name^='especial_tipo_']");
+    const MAX_CHARS = 50;
+
+    descripcionInputs.forEach(input => {
+      // Crear contador dinámico
+      const contador = document.createElement("small");
+      contador.style.display = "block";
+      contador.style.fontSize = "0.85em";
+      contador.style.color = "#666";
+      contador.style.marginTop = "2px";
+      contador.textContent = `0 / ${MAX_CHARS} caracteres maximos`;
+
+      // Insertar el contador justo debajo del input
+      input.insertAdjacentElement("afterend", contador);
+
+      // Evento: actualizar mientras escribe
+      input.addEventListener("input", () => {
+        let texto = input.value;
+
+        // limitar texto máximo
+        if (texto.length > MAX_CHARS) {
+          input.value = texto.slice(0, MAX_CHARS);
+          texto = input.value;
+        }
+
+        // actualizar contador
+        contador.textContent = `${texto.length} / ${MAX_CHARS} caracteres maximos`;
+
+        // cambiar color si se acerca al límite
+        if (texto.length >= MAX_CHARS - 5) {
+          contador.style.color = "#c0392b"; // rojo alerta
+        } else if (texto.length >= MAX_CHARS - 15) {
+          contador.style.color = "#e67e22"; // naranja advertencia
+        } else {
+          contador.style.color = "#008000"; // normal
+        }
+      });
+    });
+  });
+  </script>
+
+
+
+
+
 <body>
-  <h1>Nueva Cotización :v</h1>
+
+  <div class="contenedor-boton">
+    <a href="">
+      <button class="Titulo-Principal">
+        <h1>Nueva Cotización</h1>
+      </button>
+    </a>
+  </div>
+
+ <h1></h1>
   <form method="post">
     {% csrf_token %}
-
-    <p>Comprador: {{ form.comprador }}</p>
-    <p>Fecha emisión: {{ form.fecha_emision }}</p>
-    <p>Fecha envio: {{ form.fecha_vencimiento }}</p>
+    <div style="display: flex; gap: 10px;">
+      <p>Comprador: {{ form.comprador }}</p>
+      <p>Fecha emisión: {{ form.fecha_emision }}</p>
+      <p>Fecha envio: {{ form.fecha_vencimiento }}</p>
+    </div>
 
     <h3>Detalle de Productos</h3>
+
+    <div style="background-color: yellow; color: black; text-align: center;font-size: 30px; padding: 3px;font-weight: bold;"> 
+      <p >Seleciona un Producto despues escribe unidades de el</p>
+    </div>
+
+
     <table id="items-table">
       <tr>
         <th>Producto</th>
@@ -178,17 +615,15 @@
     </table>
     
 
-
-
   <table>
     <tr class="item-row especial">
-      <td colspan="5" style="background-color:#f7f7f7; font-weight:bold;">Productos especiales</td>
+      <td colspan="5" style="background-color:#f7f7f7; font-weight:bold;">Productos especiales[ ingreso manual ]</td>
     </tr>
     <tr>
-      <th style="background-color:#f7f7f7;">Descripción :V</th>
-      <th style="background-color:#f7f7f7;">Unidades</th>
-      <th style="background-color:#f7f7f7;">Precio Unitario</th>
-      <th style="background-color:#f7f7f7;">Total</th>
+      <th style="background-color:#817e7e;">Descripción :V</th>
+      <th style="background-color:#817e7e;">Unidades</th>
+      <th style="background-color:#817e7e;">Precio Unitario</th>   
+      <th style="background-color:#817e7e;">Total</th>
     </tr>
 
     {% for i in "1234" %}
@@ -249,6 +684,8 @@
 
     <button type="submit">Guardar</button>
   </form>
-  <a href="{% url 'orden_list' %}">⬅ Volver</a>
+  <button style="background-color: red;">
+    <a style="text-decoration: none;color: aliceblue;" href="{% url 'orden_list' %}">⬅ Volver</a>
+  </button>
 </body>
 </html>
