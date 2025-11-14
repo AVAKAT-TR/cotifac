@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
+
+
+
 <head>
   <meta charset="UTF-8">
   <title>Iniciar Sesión</title>
@@ -53,19 +57,167 @@
       }
     }
 
+  input {
+    border: 5px solid #ccc;
+    padding: 8px;
+    transition: border-color 0.3s ease;
+  }
 
+  input:focus {
+    border-color: #04ff00;
+    outline: none;
+  }
+
+
+
+
+  h2,h1,h6,p,button{
+  opacity: 0;
+  animation: fadeIn 7s forwards;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+
+
+
+
+
+
+
+    .contenedor {
+      position: relative;
+      width: 500px;
+      margin: 0 auto;
+      height: 320px;
+    }
+
+    #logo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      transition: opacity 2s ease;
+      z-index: 2;
+    }
+
+    #logo.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #formulario {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 2s ease;
+      z-index: 1;
+    }
+    #formulario.visible {
+      opacity: 1;
+    }
+
+
+    #logo.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #login-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 2s ease;
+      z-index: 1;
+    }
+
+    #login-container.visible {
+      opacity: 1;
+    }
+
+    #logo {
+        opacity: 1;
+        transition: opacity 2s ease;
+        display: block;
+        margin: 0 auto;
+      }
+
+      #logo.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #login-container {
+        opacity: 0;
+        transition: opacity 2s ease;
+      }
+
+      #login-container.visible {
+        opacity: 1;
+      }
 
 
 
   
   </style>
 
+</head>
+<script>
+  setTimeout(() => {
+    document.getElementById('logo').classList.add('fade-out');
+    document.getElementById('formulario').classList.add('visible');
+  }, 1000);
+</script>
+
+<body>
+
+  <div class="contenedor">
+    <img id="logo" src="{% static 'images/logoo2.png' %}" alt="Logo COTIFAC">
+
+    <div id="formulario">
+      <div style="justify-content:center ; display: flex; align-items:baseline; gap: 10px;">
+        <h1 class="">COTIFAC</h1><h6>For LaCasaDeLosGansos</h6>
+      </div>
+
+      <h2>🔐 Iniciar Sesión</h2>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p style="color:red;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        <p><input type="text" name="username" placeholder="Usuario" required></p>
+        <p><input type="password" name="password" placeholder="Contraseña" required></p>
+        <button type="submit">Ingresar</button>
+      </form>
+
+      <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+  <!--CODIGO ORIGINAL
+
 
 </head>
 
 <body>
 
- 
+  <img src="{% static 'images/logoo2.png' %}" alt="Logo COTIFAC" style="width:500px;">
+
+
   <div style="justify-content:center ; display: flex; align-items:baseline; gap: 10px;">
     <h1 class="">COTIFAC</h1><h6>For LaCasaDeLosGansos</h6>
   </div>
@@ -86,5 +238,15 @@
   </form>
 
   <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+
+
+
+
 </body>
+
+
+
+
 </html>
+
+  -->
