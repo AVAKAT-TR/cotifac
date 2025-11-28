@@ -332,74 +332,91 @@ input:focus {
     calcularTotales();
   }
 
-  function calcularTotales() {
-    let subtotal = 0;
 
-    // --- Calcular totales de productos normales ---
-    const filas = document.querySelectorAll("#items-table tr.item-row");
-    filas.forEach(fila => {
-      const cantidad = parseFloat(fila.querySelector('input[name$="-cantidad"]').value) || 0;
-      const precio = parseFloat(fila.querySelector('input[name$="-precio"]').value) || 0;
-      const total = cantidad * precio;
+function calcularTotales() {
+  var subtotal = 0;
 
-      const totalInput = fila.querySelector(".total-item");
-      if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
+  // --- Calcular totales de productos normales ---
+  var filas = document.querySelectorAll("#items-table tr.item-row");
+  filas.forEach(function(fila) {
+    var cantidadInput = fila.querySelector('input[name$="-cantidad"]');
+    var precioInput = fila.querySelector('input[name$="-precio"]');
+    var descuentoInput = fila.querySelector('input[name$="-descuento"]');
 
-      subtotal += total;
-    });
+    var cantidad = cantidadInput ? parseFloat(cantidadInput.value) || 0 : 0;
+    var precio = precioInput ? parseFloat(precioInput.value) || 0 : 0;
+    var descuento = descuentoInput ? parseFloat(descuentoInput.value) || 0 : 0;
 
-    // --- Calcular productos especiales (hasta 4) ---
-    for (let i = 1; i <= 4; i++) {
-      const cantidad = parseFloat(document.querySelector(`input[name="especial_cantidad_${i}"]`)?.value) || 0;
-      const precio = parseFloat(document.querySelector(`input[name="especial_precio_${i}"]`)?.value) || 0;
-      const total = cantidad * precio;
-
-      // actualizar el campo total visual de cada producto especial
-      const totalInput = document.querySelectorAll(".total-item-especial")[i - 1];
-      if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
-
-      subtotal += total; // se suma al total general
+    var total = cantidad * precio;
+    if (descuento > 0) {
+      total = total - (total * (descuento / 100));
     }
 
-    // --- Leer descuento dinámico desde el campo del formulario ---
-    const descuentoInput = document.getElementById("id_descuento");
-    const descuentoPorcentaje = parseFloat(descuentoInput ? descuentoInput.value : 0) || 0;
+    var totalInput = fila.querySelector(".total-item");
+    if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
 
-    const descuento = subtotal * (descuentoPorcentaje / 100);
-    const totalFinal = subtotal - descuento;
+    subtotal += total;
+  });
 
-    // --- Actualizar campos en pantalla ---
-    document.getElementById("subtotal").value = formatNumber(subtotal);
-    document.getElementById("descuento_monto").value = formatNumber(descuento);
-    document.getElementById("id_monto_total").value = formatNumber(totalFinal);
-    document.getElementById("monto_total_hidden").value = totalFinal;
+  // --- Calcular productos especiales (hasta 4) ---
+  for (var i = 1; i <= 4; i++) {
+    var cantidadEsp = document.querySelector('input[name="especial_cantidad_' + i + '"]');
+    var precioEsp = document.querySelector('input[name="especial_precio_' + i + '"]');
+
+    var cantidad = cantidadEsp ? parseFloat(cantidadEsp.value) || 0 : 0;
+    var precio = precioEsp ? parseFloat(precioEsp.value) || 0 : 0;
+
+    var total = cantidad * precio;
+
+    var totalInput = document.querySelectorAll(".total-item-especial")[i - 1];
+    if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
+
+    subtotal += total;
   }
 
-  window.addEventListener("DOMContentLoaded", () => {
-    // Escucha cambios en productos normales
-    document.querySelectorAll("#items-table input, #items-table select").forEach(el => {
-      el.addEventListener("input", calcularTotales);
-      el.addEventListener("change", calcularTotales);
-    });
+  // --- Descuento global de la orden ---
+  var descuentoGlobalInput = document.getElementById("id_descuento");
+  var descuentoPorcentaje = descuentoGlobalInput ? parseFloat(descuentoGlobalInput.value) || 0 : 0;
 
-    // Escucha cambios en los 4 productos especiales
-    for (let i = 1; i <= 4; i++) {
-      const cantidad = document.querySelector(`input[name="especial_cantidad_${i}"]`);
-      const precio = document.querySelector(`input[name="especial_precio_${i}"]`);
-      if (cantidad) cantidad.addEventListener("input", calcularTotales);
-      if (precio) precio.addEventListener("input", calcularTotales);
-    }
+  var descuento = subtotal * (descuentoPorcentaje / 100);
+  var totalFinal = subtotal - descuento;
 
-    // Escucha cambios en el descuento (%)
-    const descuentoInput = document.getElementById("id_descuento");
-    if (descuentoInput) {
-      descuentoInput.addEventListener("input", calcularTotales);
-      descuentoInput.addEventListener("change", calcularTotales);
-    }
+  // --- Actualizar totales visibles ---
+  document.getElementById("subtotal").value = formatNumber(subtotal);
+  document.getElementById("descuento_monto").value = formatNumber(descuento);
+  document.getElementById("id_monto_total").value = formatNumber(totalFinal);
+  document.getElementById("monto_total_hidden").value = totalFinal;
+}
 
-    calcularTotales();
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Detectar cambios en productos normales
+  document.querySelectorAll("#items-table input, #items-table select").forEach(function(el) {
+    el.addEventListener("input", calcularTotales);
+    el.addEventListener("change", calcularTotales);
   });
+
+  // Detectar cambios en productos especiales
+  for (var i = 1; i <= 4; i++) {
+    var cantidad = document.querySelector('input[name="especial_cantidad_' + i + '"]');
+    var precio = document.querySelector('input[name="especial_precio_' + i + '"]');
+    if (cantidad) cantidad.addEventListener("input", calcularTotales);
+    if (precio) precio.addEventListener("input", calcularTotales);
+  }
+
+  // Detectar cambios en el descuento global
+  var descuentoGlobalInput = document.getElementById("id_descuento");
+  if (descuentoGlobalInput) {
+    descuentoGlobalInput.addEventListener("input", calcularTotales);
+    descuentoGlobalInput.addEventListener("change", calcularTotales);
+  }
+
+  calcularTotales();
+});
 </script>
+
+
 
 
 
@@ -581,38 +598,40 @@ document.addEventListener("DOMContentLoaded", function() {
  <h1></h1>
   <form method="post">
     {% csrf_token %}
-    <div style="display: flex; gap: 10px;">
+    <div style="display: flex; gap: 10px; font-weight: bold;">
       <p>Comprador: {{ form.comprador }}</p>
       <p>Fecha emisión: {{ form.fecha_emision }}</p>
       <p>Fecha envio: {{ form.fecha_vencimiento }}</p>
     </div>
 
-    <h3>Detalle de Productos</h3>
+<h3>Detalle de Productos</h3>
 
-    <div style="background-color: yellow; color: black; text-align: center;font-size: 30px; padding: 3px;font-weight: bold;"> 
-      <p >Seleciona un Producto despues escribe unidades de el</p>
-    </div>
+<div style="background-color: yellow; color: black; text-align: center;font-size: 30px; padding: 3px;font-weight: bold;"> 
+  <p>Selecciona un producto y luego indica la cantidad de unidades</p>
+</div>
 
+<table id="items-table">
+  <tr>
+    <th>Producto</th>
+    <th>Descripción</th>
+    <th>Unidades</th>
+    <th>Precio unitario</th>
+    <th>Descuento (%)</th> <!-- 👈 Nueva columna -->
+    <th>Total</th>
+  </tr>
+  {{ formset.management_form }}
+  {% for f in formset %}
+  <tr class="item-row">
+    <td>{{ f.producto }}</td>
+    <td>{{ f.descripcion }}</td>
+    <td>{{ f.cantidad }}</td>
+    <td>{{ f.precio }}</td>
+    <td>{{ f.descuento }}</td> <!-- 👈 Nuevo campo editable -->
+    <td><input type="text" class="total-item" readonly></td>
+  </tr>
+  {% endfor %}
+</table>
 
-    <table id="items-table">
-      <tr>
-        <th>Producto</th>
-        <th>Descripción</th>
-        <th>Unidades</th>
-        <th>Precio unitario</th>
-        <th>Total</th>
-      </tr>
-      {{ formset.management_form }}
-      {% for f in formset %}
-      <tr class="item-row">
-        <td>{{ f.producto }}</td>
-        <td>{{ f.descripcion }}</td>
-        <td>{{ f.cantidad }}</td>
-        <td>{{ f.precio }}</td>
-        <td><input type="text" class="total-item" readonly></td>
-      </tr>
-      {% endfor %}
-    </table>
     
 
   <table>
