@@ -36,16 +36,6 @@ class OrdenCompra(models.Model):
         return f"Orden {self.id} - {self.comprador}"
 
 
-class Item(models.Model):
-    orden = models.ForeignKey(OrdenCompra, related_name="items", on_delete=models.CASCADE)
-    producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, null=True, blank=True)
-    descripcion = models.CharField(max_length=200, blank=True)
-    cantidad = models.IntegerField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def subtotal(self):
-        return self.cantidad * self.precio
-
 class Producto(models.Model):
     tipo = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100)
@@ -60,3 +50,18 @@ class Producto(models.Model):
         return f"{tipo} - {codigo} {medida} ({precio})".strip()
 
 
+class Item(models.Model):
+    orden = models.ForeignKey(OrdenCompra, related_name="items", on_delete=models.CASCADE)
+    producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, null=True, blank=True)
+    descripcion = models.CharField(max_length=200, blank=True)
+    cantidad = models.IntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    descuento = models.DecimalField(max_digits=5, decimal_places=2, default=0)  # 👈 descuento individual %
+
+    def subtotal(self):
+        subtotal_bruto = self.cantidad * self.precio
+        descuento_aplicado = subtotal_bruto * (self.descuento / 100)
+        return subtotal_bruto - descuento_aplicado
+
+    def __str__(self):
+        return f"{self.descripcion or self.producto} ({self.cantidad}u)"
