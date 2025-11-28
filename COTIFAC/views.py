@@ -100,6 +100,9 @@ def orden_list(request):
 
 
 
+# --- Dentro de tu archivo views.py (versión actualizada) ---
+# Solo se modificaron las funciones crear_orden() y crear_factura()
+
 @login_required
 def crear_orden(request):
     ItemFormSet = modelformset_factory(Item, form=ItemForm, extra=5, can_delete=False)
@@ -135,22 +138,29 @@ def crear_orden(request):
                 esp_tipo = request.POST.get(f"especial_tipo_{i}", "").strip()
                 esp_cant = request.POST.get(f"especial_cantidad_{i}", "").strip()
                 esp_prec = request.POST.get(f"especial_precio_{i}", "").strip()
+                esp_desc = request.POST.get(f"especial_descuento_{i}", "").strip()  # 👈 Nuevo campo opcional
 
                 if esp_tipo and esp_cant and esp_prec:
                     try:
                         cantidad = int(esp_cant)
                         precio = Decimal(esp_prec)
+                        descuento = Decimal(esp_desc) if esp_desc else Decimal(0)
                     except:
-                        continue  # Si algún valor no es numérico, salta esta fila
+                        continue
 
-                    # 👇 Guardamos como item sin producto asociado (solo con la descripción)
                     Item.objects.create(
                         orden=orden,
                         producto=None,
-                        descripcion=esp_tipo,  # se usa lo que escribas
+                        descripcion=esp_tipo,
                         cantidad=cantidad,
                         precio=precio,
+                        descuento=descuento,  # 👈 Guardar descuento si lo hay
                     )
+
+            # --- Recalcular total considerando descuentos individuales ---
+            total = sum(item.subtotal() for item in orden.items.all())
+            orden.monto_total = total
+            orden.save()
 
             return redirect("orden_list")
 
@@ -163,6 +173,8 @@ def crear_orden(request):
         "formset": formset,
         "productos_json": json.dumps(productos_json),
     })
+
+
 
 
 @login_required
@@ -250,7 +262,7 @@ def orden_pdf(request, pk):
         canvas.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
         # Rectángulo blanco central
         canvas.setFillColor(colors.white)
-        canvas.rect(1*cm, 1*cm, A4[0]-2*cm, A4[1]-2*cm, fill=1, stroke=0)
+        canvas.rect(0.7*cm, 0.7*cm, A4[0]-1.4*cm, A4[1]-1.4*cm, fill=1, stroke=0)
         canvas.restoreState()
 
     # --- Logo ---
@@ -285,8 +297,9 @@ def orden_pdf(request, pk):
 
     # --- Datos del cliente, vendedor, fecha y estado ---
     info_data = [
-        ["Cliente:", orden.comprador, "Fecha:", str(orden.fecha_emision)],
-    ]
+    ["Cliente:", orden.comprador, "Fecha:", orden.fecha_emision.strftime("%d-%m-%Y") if orden.fecha_emision else ""],
+]
+
 
 
     tabla_info = Table(info_data, colWidths=[2*cm, 6*cm, 2*cm, 6*cm])
@@ -306,7 +319,8 @@ def orden_pdf(request, pk):
     # --- Tabla de productos ---
     # --- Tabla de productos ---
     # --- Tabla de productos ---
-    data = [["Producto/Descripción", "Unidades", "Precio unitario", "Total"]]
+    # --- Tabla de productos ---
+    data = [["Producto/Descripción", "Unidades", "Precio unitario", "Descuento", "Total"]]
 
     for item in orden.items.all():
         # Si el producto existe, usa su nombre completo
@@ -316,15 +330,19 @@ def orden_pdf(request, pk):
             # Si es producto especial, mostrar solo lo que escribió el usuario
             descripcion_final = item.descripcion.strip() if item.descripcion else ""
 
+        # Mostrar el descuento por ítem en formato "10%" o "0%"
+        descuento_item = f"{item.descuento:.0f}%" if item.descuento else "0%"
+
         data.append([
             descripcion_final,
             str(item.cantidad),
             f"${formato_numero(item.precio)}",
+            descuento_item,
             f"${formato_numero(item.subtotal())}"
         ])
 
-    # --- Configuración visual igual que antes ---
-    tabla = Table(data, colWidths=[10.2*cm, 2*cm, 3*cm, 3*cm])
+    # --- Configuración visual ---
+    tabla = Table(data, colWidths=[9.8*cm, 1.8*cm, 2.8*cm, 2.1*cm, 2.5*cm])
     tabla.setStyle(TableStyle([
         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F2F2F2")),
@@ -333,9 +351,11 @@ def orden_pdf(request, pk):
         ("FONTSIZE", (0, 0), (-1, -1), 10),
         ("TOPPADDING", (0, 0), (-1, -1), 6),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+        ("FONTNAME", (3, 1), (3, -1), "Helvetica-Bold"),  # descuento en negrita
     ]))
     elements.append(tabla)
     elements.append(Spacer(1, 14))
+
 
 
 
@@ -575,13 +595,15 @@ def crear_factura(request):
                 esp_tipo = request.POST.get(f"especial_tipo_{i}", "").strip()
                 esp_cant = request.POST.get(f"especial_cantidad_{i}", "").strip()
                 esp_prec = request.POST.get(f"especial_precio_{i}", "").strip()
+                esp_desc = request.POST.get(f"especial_descuento_{i}", "").strip()  # 👈 Nuevo campo opcional
 
                 if esp_tipo and esp_cant and esp_prec:
                     try:
                         cantidad = int(esp_cant)
                         precio = Decimal(esp_prec)
+                        descuento = Decimal(esp_desc) if esp_desc else Decimal(0)
                     except:
-                        continue  # Si algún valor no es numérico, salta esta fila
+                        continue
 
                     Item.objects.create(
                         orden=orden,
@@ -589,9 +611,10 @@ def crear_factura(request):
                         descripcion=esp_tipo,
                         cantidad=cantidad,
                         precio=precio,
+                        descuento=descuento,
                     )
 
-            # --- (Opcional) recalcular el monto total de la factura ---
+            # --- Recalcular total considerando descuentos individuales ---
             total = sum(item.subtotal() for item in orden.items.all())
             orden.monto_total = total
             orden.save()
@@ -607,10 +630,6 @@ def crear_factura(request):
         "formset": formset,
         "productos_json": json.dumps(productos_json),
     })
-
-
-
-
 
 @login_required
 def factura_pdf(request, pk):
