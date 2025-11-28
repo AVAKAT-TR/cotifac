@@ -1,19 +1,25 @@
 from django import forms
 from .models import OrdenCompra, Item, Producto
 from django.forms import inlineformset_factory
-from .models import OrdenCompra, Item
 
 
 # --------------------
-# FORMULARIO ORDEN DE COMPRA
+# FORMULARIO ORDEN DE COMPRA (COTIZACIÓN)
 # --------------------
-
 class OrdenForm(forms.ModelForm):
-    monto_total = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+    monto_total = forms.CharField(
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
 
     class Meta:
         model = OrdenCompra
-        fields = ['comprador', 'fecha_emision', 'fecha_vencimiento', 'descuento', 'monto_total']
+        fields = [
+            'comprador',
+            'fecha_emision',
+            'fecha_vencimiento',
+            'descuento',
+            'monto_total',
+        ]
         widgets = {
             'fecha_emision': forms.DateInput(attrs={'type': 'date'}),
             'fecha_vencimiento': forms.DateInput(attrs={'type': 'date'}),
@@ -43,10 +49,25 @@ class ItemForm(forms.ModelForm):
 
     class Meta:
         model = Item
-        fields = ["producto", "descripcion", "cantidad", "precio"]
+        fields = ['producto', 'descripcion', 'cantidad', 'precio', 'descuento']
         widgets = {
             "descripcion": forms.TextInput(attrs={"readonly": "readonly"}),
             "precio": forms.NumberInput(attrs={"readonly": "readonly"}),
+            "cantidad": forms.NumberInput(attrs={'min': '1'}),
+            "descuento": forms.NumberInput(attrs={
+                'step': '0.1',
+                'min': '0',
+                'max': '100',
+                'placeholder': '%',
+                'style': 'width:80px; text-align:center;'
+            }),
+        }
+        labels = {
+            'producto': 'Producto',
+            'descripcion': 'Descripción',
+            'cantidad': 'Unidades',
+            'precio': 'Precio Neto',
+            'descuento': 'Desc. (%)'
         }
 
 
@@ -57,13 +78,14 @@ ItemFormSet = inlineformset_factory(
     OrdenCompra,
     Item,
     form=ItemForm,
-    extra=5,          # cantidad de filas vacías
+    extra=5,           # cantidad de filas vacías
     can_delete=False
 )
 
 
-
-
+# --------------------
+# FORMULARIO FACTURA (con datos extendidos del cliente)
+# --------------------
 class OrdenFacturaForm(forms.ModelForm):
     class Meta:
         model = OrdenCompra
@@ -83,4 +105,5 @@ class OrdenFacturaForm(forms.ModelForm):
         widgets = {
             'fecha_emision': forms.DateInput(attrs={'type': 'date'}),
             'fecha_vencimiento': forms.DateInput(attrs={'type': 'date'}),
+            'descuento': forms.NumberInput(attrs={'step': '0.1', 'min': '0', 'max': '100'}),
         }
