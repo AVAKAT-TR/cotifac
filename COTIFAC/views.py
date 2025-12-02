@@ -342,7 +342,7 @@ def orden_pdf(request, pk):
         ])
 
     # --- Configuración visual ---
-    tabla = Table(data, colWidths=[9.8*cm, 1.8*cm, 2.8*cm, 2.1*cm, 2.5*cm])
+    tabla = Table(data, colWidths=[10.2*cm, 1.8*cm, 2.8*cm, 2.1*cm, 2.5*cm])
     tabla.setStyle(TableStyle([
         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F2F2F2")),
