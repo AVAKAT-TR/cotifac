@@ -19,6 +19,10 @@ class OrdenCompra(models.Model):
     fecha_vencimiento = models.DateField()
     descuento = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     monto_total = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+
+    # 👇 NUEVO CAMPO: texto libre para el título del descuento
+    nota_descuento = models.CharField(max_length=255, blank=True, null=True)
+
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     TIPO_CHOICES = [
