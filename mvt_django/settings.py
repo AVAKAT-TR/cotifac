@@ -192,10 +192,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    os.path.join(BASE_DIR, 'COTIFAC', 'static'),  # donde está tu carpeta con imágenes
 ]
 
-
+# 📦 Render usará esta carpeta para servirlos en producción
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 
