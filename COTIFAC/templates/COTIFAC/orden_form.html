@@ -333,12 +333,17 @@ input:focus {
   }
 
 
-function calcularTotales() {
-  var subtotal = 0;
 
-  // --- Calcular totales de productos normales ---
+// --- 🔹 FUNCIÓN PRINCIPAL: calcularTotales ---
+// Se encarga de actualizar los totales en tiempo real (productos normales y especiales)
+function calcularTotales() {
+  var subtotal = 0; // acumulador general del total antes de descuentos globales
+
+  // -------------------------------------------------------
+  // 1️⃣ Calcular totales de productos normales (del formset)
+  // -------------------------------------------------------
   var filas = document.querySelectorAll("#items-table tr.item-row");
-  filas.forEach(function(fila) {
+  filas.forEach(function (fila) {
     var cantidadInput = fila.querySelector('input[name$="-cantidad"]');
     var precioInput = fila.querySelector('input[name$="-precio"]');
     var descuentoInput = fila.querySelector('input[name$="-descuento"]');
@@ -347,71 +352,95 @@ function calcularTotales() {
     var precio = precioInput ? parseFloat(precioInput.value) || 0 : 0;
     var descuento = descuentoInput ? parseFloat(descuentoInput.value) || 0 : 0;
 
+    // 🧮 Calcular total con posible descuento
     var total = cantidad * precio;
     if (descuento > 0) {
-      total = total - (total * (descuento / 100));
+      total -= total * (descuento / 100);
     }
 
+    // Mostrar el total formateado en su campo
     var totalInput = fila.querySelector(".total-item");
     if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
 
     subtotal += total;
   });
 
-  // --- Calcular productos especiales (hasta 4) ---
+  // -------------------------------------------------------
+  // 2️⃣ Calcular totales de productos especiales (manuales)
+  // -------------------------------------------------------
   for (var i = 1; i <= 4; i++) {
     var cantidadEsp = document.querySelector('input[name="especial_cantidad_' + i + '"]');
     var precioEsp = document.querySelector('input[name="especial_precio_' + i + '"]');
+    var descuentoEsp = document.querySelector('input[name="especial_descuento_' + i + '"]'); // nuevo campo de descuento
 
+    // convertir valores a número
     var cantidad = cantidadEsp ? parseFloat(cantidadEsp.value) || 0 : 0;
     var precio = precioEsp ? parseFloat(precioEsp.value) || 0 : 0;
+    var descuento = descuentoEsp ? parseFloat(descuentoEsp.value) || 0 : 0;
 
+    // 🧮 calcular total considerando descuento
     var total = cantidad * precio;
+    if (descuento > 0) {
+      total -= total * (descuento / 100);
+    }
 
+    // mostrar total en su celda
     var totalInput = document.querySelectorAll(".total-item-especial")[i - 1];
     if (totalInput) totalInput.value = total > 0 ? formatNumber(total) : "";
 
-    subtotal += total;
+    subtotal += total; // acumular
   }
 
-  // --- Descuento global de la orden ---
+  // -------------------------------------------------------
+  // 3️⃣ Aplicar descuento global de la orden
+  // -------------------------------------------------------
   var descuentoGlobalInput = document.getElementById("id_descuento");
   var descuentoPorcentaje = descuentoGlobalInput ? parseFloat(descuentoGlobalInput.value) || 0 : 0;
 
   var descuento = subtotal * (descuentoPorcentaje / 100);
   var totalFinal = subtotal - descuento;
 
-  // --- Actualizar totales visibles ---
+  // -------------------------------------------------------
+  // 4️⃣ Mostrar resultados en la interfaz
+  // -------------------------------------------------------
   document.getElementById("subtotal").value = formatNumber(subtotal);
   document.getElementById("descuento_monto").value = formatNumber(descuento);
   document.getElementById("id_monto_total").value = formatNumber(totalFinal);
-  document.getElementById("monto_total_hidden").value = totalFinal;
+  document.getElementById("monto_total_hidden").value = totalFinal; // usado en backend
 }
 
+// --- 🔹 FUNCIÓN AUXILIAR: formatear número con separadores ---
+function formatNumber(num) {
+  return (isNaN(num) ? 0 : num).toLocaleString("es-CL");
+}
 
-
-document.addEventListener("DOMContentLoaded", function() {
-  // Detectar cambios en productos normales
-  document.querySelectorAll("#items-table input, #items-table select").forEach(function(el) {
+// --- 🔹 ACTIVAR LISTENERS AL CARGAR LA PÁGINA ---
+document.addEventListener("DOMContentLoaded", function () {
+  // Escuchar cambios en los productos normales (formset)
+  document.querySelectorAll("#items-table input, #items-table select").forEach(function (el) {
     el.addEventListener("input", calcularTotales);
     el.addEventListener("change", calcularTotales);
   });
 
-  // Detectar cambios en productos especiales
+  // Escuchar cambios en productos especiales (cantidad, precio y descuento)
   for (var i = 1; i <= 4; i++) {
     var cantidad = document.querySelector('input[name="especial_cantidad_' + i + '"]');
     var precio = document.querySelector('input[name="especial_precio_' + i + '"]');
+    var descuento = document.querySelector('input[name="especial_descuento_' + i + '"]');
+
     if (cantidad) cantidad.addEventListener("input", calcularTotales);
     if (precio) precio.addEventListener("input", calcularTotales);
+    if (descuento) descuento.addEventListener("input", calcularTotales);
   }
 
-  // Detectar cambios en el descuento global
+  // Escuchar cambios en el descuento global
   var descuentoGlobalInput = document.getElementById("id_descuento");
   if (descuentoGlobalInput) {
     descuentoGlobalInput.addEventListener("input", calcularTotales);
     descuentoGlobalInput.addEventListener("change", calcularTotales);
   }
 
+  // Calcular una primera vez al cargar
   calcularTotales();
 });
 </script>
@@ -585,6 +614,57 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const input = document.querySelector("input[name='nota_descuento']");
+      const contador = document.getElementById("nota-descuento-contador");
+      const MAX_CHARS = 40;
+
+      if (input && contador) {
+        // 🔹 Límite máximo en el propio input
+        input.setAttribute("maxlength", MAX_CHARS);
+
+        // 🔹 Estilo base del input
+        input.style.width = "250px";
+        input.style.border = "1px solid #ccc";
+        input.style.borderRadius = "6px";
+        input.style.padding = "5px 8px";
+        input.style.fontSize = "13px";
+
+        // 🔹 Evento para actualizar el contador en tiempo real
+        input.addEventListener("input", () => {
+          let texto = input.value;
+
+          // limitar manualmente por si acaso
+          if (texto.length > MAX_CHARS) {
+            input.value = texto.slice(0, MAX_CHARS);
+            texto = input.value;
+          }
+
+          contador.textContent = `${texto.length} / ${MAX_CHARS} caracteres máximos`;
+
+          // colores progresivos
+          if (texto.length >= MAX_CHARS - 3) {
+            contador.style.color = "#c0392b"; // rojo
+          } else if (texto.length >= MAX_CHARS - 10) {
+            contador.style.color = "#e67e22"; // naranja
+          } else {
+            contador.style.color = "#008000"; // verde
+          }
+        });
+      }
+    });
+  </script>
+
+
+
+
+
+
+
+
+
 <body>
 
   <div class="contenedor-boton">
@@ -634,26 +714,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
 
-  <table>
-    <tr class="item-row especial">
-      <td colspan="5" style="background-color:#f7f7f7; font-weight:bold;">Productos especiales[ ingreso manual ]</td>
-    </tr>
-    <tr>
-      <th style="background-color:#817e7e;">Descripción :V</th>
-      <th style="background-color:#817e7e;">Unidades</th>
-      <th style="background-color:#817e7e;">Precio Unitario</th>   
-      <th style="background-color:#817e7e;">Total</th>
-    </tr>
+<table>
+  <tr class="item-row especial">
+    <td colspan="6" style="background-color:#f7f7f7; font-weight:bold;">
+      Productos especiales [ ingreso manual ]
+    </td>
+  </tr>
+  <tr>
+    <th style="background-color:#817e7e;">Descripción</th>
+    <th style="background-color:#817e7e;">Unidades</th>
+    <th style="background-color:#817e7e;">Precio Unitario</th>
+    <th style="background-color:#817e7e;">Descuento (%)</th> <!-- 👈 Nueva columna -->
+    <th style="background-color:#817e7e;">Total</th>
+  </tr>
 
-    {% for i in "1234" %}
-    <tr class="item-row especial">
-      <td><input type="text" name="especial_tipo_{{i}}" placeholder="Descripción del producto" style="width:95%"></td>
-      <td><input type="number" min="0" name="especial_cantidad_{{i}}" value="0" style="width:80px"></td>
-      <td><input type="number" min="0" name="especial_precio_{{i}}" value="0" style="width:100px"></td>
-      <td><input type="text" class="total-item-especial" readonly></td>
-    </tr>
-    {% endfor %}
-  </table>
+  {% for i in "1234" %}
+  <tr class="item-row especial">
+    <td><input type="text" name="especial_tipo_{{i}}" placeholder="Descripción del producto" style="width:95%"></td>
+    <td><input type="number" min="0" name="especial_cantidad_{{i}}" value="0" style="width:80px"></td>
+    <td><input type="number" min="0" name="especial_precio_{{i}}" value="0" style="width:100px"></td>
+    <td><input type="number" min="0" max="100" step="0.1" name="especial_descuento_{{i}}" value="0" style="width:80px"></td> <!-- 👈 Campo nuevo -->
+    <td><input type="text" class="total-item-especial" readonly></td>
+  </tr>
+  {% endfor %}
+</table>
+
 
 
 
@@ -662,12 +747,31 @@ document.addEventListener("DOMContentLoaded", function() {
         <td>Valor total:</td>
         <td><input type="text" id="subtotal" readonly></td>
       </tr>
+      
       <tr>
-        <td>Descuento (%):</td>
+        <td>
+          <!-- Etiqueta principal -->
+          <label for="{{ form.descuento.id_for_label }}">
+            Descuento (%):
+          </label>
+          <br>
+
+          <!-- Campo de texto para el título del descuento -->
+          <div style="margin-top: 4px;">
+            {{ form.nota_descuento }}
+          </div>
+
+          <!-- Contador dinámico -->
+          <small id="nota-descuento-contador" style="display:block; font-size:0.85em; color:#008000; margin-top:3px;">
+            0 / 40 caracteres máximos
+          </small>
+        </td>
+
         <td>
           {{ form.descuento }} %
         </td>
       </tr>
+
       <tr>
         <td>Monto de descuento:</td>
         <td><input type="text" id="descuento_monto" readonly></td>
