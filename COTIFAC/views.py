@@ -341,6 +341,44 @@ def orden_pdf(request, pk):
             f"${formato_numero(item.subtotal())}"
         ])
 
+
+            # --- Leer productos especiales enviados en el formulario ---
+        for i in range(1, 5):
+            tipo = request.POST.get(f"especial_tipo_{i}", "").strip()
+            cantidad = request.POST.get(f"especial_cantidad_{i}", "").strip()
+            precio = request.POST.get(f"especial_precio_{i}", "").strip()
+            descuento = request.POST.get(f"especial_descuento_{i}", "").strip()
+
+            if tipo and cantidad and precio:
+                try:
+                    cantidad = int(cantidad)
+                    precio = float(precio)
+                    descuento = float(descuento) if descuento else 0
+                    subtotal_especial = cantidad * precio * (1 - descuento / 100)
+                except ValueError:
+                    continue
+
+                data.append([
+                    tipo,
+                    str(cantidad),
+                    f"${formato_numero(precio)}",
+                    f"{descuento:.0f}%",
+                    f"${formato_numero(subtotal_especial)}"
+                ])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # --- Configuración visual ---
     tabla = Table(data, colWidths=[10.2*cm, 1.8*cm, 2.8*cm, 2.1*cm, 2.5*cm])
     tabla.setStyle(TableStyle([
@@ -367,35 +405,58 @@ def orden_pdf(request, pk):
 
 
     # --- Totales ---
-    subtotal = sum(item.subtotal() for item in orden.items.all())
-    descuento = subtotal * (Decimal(orden.descuento) / Decimal(100))
-    total = subtotal - descuento
+    # 1️⃣ Calculamos los valores base de la orden
+    subtotal = sum(item.subtotal() for item in orden.items.all())  # suma de todos los subtotales de ítems
+    descuento = subtotal * (Decimal(orden.descuento) / Decimal(100))  # monto del descuento en dinero
+    total = subtotal - descuento  # valor total final después del descuento
 
-        # 👇 Redondear descuento limpio (sin .00)
-    descuento_str = f"{orden.descuento:.0f}" if orden.descuento % 1 == 0 else f"{orden.descuento}"
-
+    # 2️⃣ Preparamos la tabla de totales que aparecerá al final del PDF
     totales = [
-    [Paragraph("Valor total:", styles["Normal"]),
-     Paragraph(f"${formato_numero(subtotal)}", styles["Normal"])],
-    [Paragraph(f"Descuento transferencia electrónica {descuento_str}%:", styles["Normal"]),
-     Paragraph(f"- ${formato_numero(descuento)}", styles["Normal"])],
-    [Paragraph("<b>Valor Final:</b>", styles["Normal"]),
-     Paragraph(f"<b>${formato_numero(total)}</b>", styles["Normal"])],
-]
+        # Siempre se muestra el valor total antes de descuentos
+        [Paragraph("Valor total:", styles["Normal"]),
+        Paragraph(f"${formato_numero(subtotal)}", styles["Normal"])],
+    ]
 
+    # 3️⃣ Solo mostramos la línea del descuento si aplica
+    if orden.descuento and orden.descuento > 0:
+        # Redondeamos visualmente el valor del descuento (para no mostrar .00 innecesarios)
+        descuento_str = f"{orden.descuento:.0f}" if orden.descuento % 1 == 0 else f"{orden.descuento}"
 
+        # Recuperamos el texto personalizado, si el usuario lo escribió en el formulario
+        texto_descuento = getattr(orden, "nota_descuento", "").strip() if hasattr(orden, "nota_descuento") else ""
+
+        # Si el usuario escribió un texto, lo usamos; si no, mostramos "Descuento"
+        if texto_descuento:
+            etiqueta_desc = f"{texto_descuento} {descuento_str}%:"
+        else:
+            etiqueta_desc = f"Descuento {descuento_str}%:"
+
+        # Agregamos la fila del descuento con el monto en negativo
+        totales.append([
+            Paragraph(etiqueta_desc, styles["Normal"]),
+            Paragraph(f"- ${formato_numero(descuento)}", styles["Normal"])
+        ])
+
+    # 4️⃣ Siempre mostramos la línea del total final (resumen total)
+    totales.append([
+        Paragraph("<b>Valor Final:</b>", styles["Normal"]),
+        Paragraph(f"<b>${formato_numero(total)}</b>", styles["Normal"])
+    ])
+
+    # 5️⃣ Generamos la tabla visual de los totales
     tabla_totales = Table(totales, colWidths=[14*cm, 4*cm])
     tabla_totales.setStyle(TableStyle([
-        ("ALIGN", (1, 0), (1, -1), "RIGHT"),
-        ("FONTNAME", (0, 0), (-1, -2), "Helvetica"),
-        ("FONTNAME", (0, -1), (-1, -1), "Helvetica-Bold"),
-        ("BACKGROUND", (0, -1), (-1, -1), colors.HexColor("#F2F2F2")),  # fondo gris claro solo en total
-        ("LINEABOVE", (0, -1), (-1, -1), 1, colors.black),
+        ("ALIGN", (1, 0), (1, -1), "RIGHT"),  # alinear valores a la derecha
+        ("FONTNAME", (0, 0), (-1, -2), "Helvetica"),  # texto normal en filas superiores
+        ("FONTNAME", (0, -1), (-1, -1), "Helvetica-Bold"),  # texto en negrita en la última fila
+        ("BACKGROUND", (0, -1), (-1, -1), colors.HexColor("#F2F2F2")),  # fondo gris solo en total final
+        ("LINEABOVE", (0, -1), (-1, -1), 1, colors.black),  # línea superior negra en el total
         ("FONTSIZE", (0, 0), (-1, -1), 10),
         ("TOPPADDING", (0, 0), (-1, -1), 6),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
     ]))
 
+    # 6️⃣ Insertamos la tabla al PDF
     elements.append(tabla_totales)
     elements.append(Spacer(1, 16))
 
