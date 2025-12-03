@@ -467,17 +467,17 @@ def orden_pdf(request, pk):
         """Dibuja las condiciones de pago y el pie de contacto al fondo del PDF."""
         canvas.saveState()
 
-        # Línea separadora gris
+        # --- Línea separadora gris ---
         canvas.setStrokeColor(colors.HexColor("#CCCCCC"))
         canvas.setLineWidth(0.5)
         canvas.line(2*cm, 5*cm, A4[0] - 2*cm, 5*cm)
 
-        # Encabezado "CONDICIONES DE PAGO"
+        # --- Encabezado "CONDICIONES DE PAGO" ---
         canvas.setFont("Helvetica-Bold", 9)
         canvas.setFillColor(colors.HexColor("#333333"))
         canvas.drawString(2*cm, 4.6*cm, "CONDICIONES DE PAGO")
 
-        # Texto con bullets
+        # --- Cuerpo del texto con bullets ---
         canvas.setFont("Helvetica", 9)
         fecha_despacho = orden.fecha_vencimiento.strftime("%d-%m-%Y") if orden.fecha_vencimiento else "Por confirmar"
 
@@ -491,16 +491,26 @@ def orden_pdf(request, pk):
             "Abono 50% previo a inicio de pedidos especiales."
         ]
 
-
+        # --- Coordenada vertical inicial ---
         y = 4.2*cm
+
+        # --- Dibujo línea por línea ---
         for line in text_lines:
+            # Detectar si es la línea del despacho
+            if line.startswith("Fecha estimada de despacho"):
+                canvas.setFont("Helvetica-Bold", 9)   # 👈 usar negrita
+                canvas.setFillColor(colors.black)      # color más fuerte para destacar
+            else:
+                canvas.setFont("Helvetica", 9)
+                canvas.setFillColor(colors.HexColor("#333333"))
+
             # Dibuja el bullet
             canvas.circle(2.1*cm - 1.5, y + 2, 1.2, fill=1)
-            # Texto de la línea
+            # Dibuja el texto
             canvas.drawString(2.4*cm, y, line)
             y -= 0.4*cm
 
-        # Pie de contacto
+        # --- Pie de contacto ---
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#666666"))
         canvas.drawCentredString(
@@ -510,6 +520,7 @@ def orden_pdf(request, pk):
         )
 
         canvas.restoreState()
+
 
 
     # --- Compilamos el PDF con fondo y footer ---
