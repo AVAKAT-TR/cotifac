@@ -8,6 +8,7 @@ urlpatterns = [
 
     path("", views.orden_list, name="orden_list"),
     path("nueva/", views.crear_orden, name="orden_create"),
+    path('editar/<int:pk>/', views.editar_orden, name='orden_edit'),
     path("pdf/<int:pk>/", views.orden_pdf, name="orden_pdf"),
     path("delete/<int:pk>/", views.orden_delete, name="orden_delete"),
     path("orden/<int:pk>/aprobar/", views.orden_aprobar, name="orden_aprobar"),
