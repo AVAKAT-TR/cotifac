@@ -661,6 +661,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // --- Esperar un pequeño retardo para asegurar que el DOM del formset esté listo ---
+  setTimeout(() => {
+    // 🧩 Selecciona todos los inputs y selects de los formsets y especiales
+    const inputs = document.querySelectorAll(
+      "input[name*='cantidad'], input[name*='precio'], input[name*='descuento'], select[name*='producto'], input[name^='especial_']"
+    );
+
+    // --- Vincular todos los eventos ---
+    inputs.forEach(el => {
+      el.addEventListener("input", calcularTotales);
+      el.addEventListener("change", calcularTotales);
+    });
+
+    // --- Ejecutar cálculo inicial cuando ya todo está cargado ---
+    calcularTotales();
+  }, 200); // <- pequeño delay para asegurarse que los formsets existen
+});
+</script>
 
 
 
@@ -702,6 +722,7 @@ document.addEventListener("DOMContentLoaded", function() {
   {{ formset.management_form }}
   {% for f in formset %}
   <tr class="item-row">
+    {{ f.id }}
     <td>{{ f.producto }}</td>
     <td>{{ f.descripcion }}</td>
     <td>{{ f.cantidad }}</td>
@@ -810,5 +831,13 @@ document.addEventListener("DOMContentLoaded", function() {
   <button style="background-color: red;">
     <a style="text-decoration: none;color: aliceblue;" href="{% url 'orden_list' %}">⬅ Volver</a>
   </button>
+
+
+
+
+
+
+
+
 </body>
 </html>
