@@ -33,6 +33,16 @@ from .models import OrdenCompra, Item, Producto
 from .forms import OrdenForm, ItemForm
 
 
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import OrdenCompra, Item
+from .forms import OrdenForm, ItemFormSet
+
+
+
+
+
 # 👉 Auxiliar para formatear números con puntos de miles
 def formato_numero(valor):
     try:
@@ -105,7 +115,7 @@ def orden_list(request):
 
 @login_required
 def crear_orden(request):
-    ItemFormSet = modelformset_factory(Item, form=ItemForm, extra=5, can_delete=False)
+    from django.forms import inlineformset_factory
     productos = Producto.objects.all()
 
     productos_json = {
@@ -116,29 +126,30 @@ def crear_orden(request):
         for p in productos
     }
 
+    ItemFormSet = inlineformset_factory(
+        OrdenCompra, Item, form=ItemForm, extra=5, can_delete=False
+    )
+
     if request.method == "POST":
         form = OrdenForm(request.POST)
-        formset = ItemFormSet(request.POST, queryset=Item.objects.none())
+        formset = ItemFormSet(request.POST)
 
         if form.is_valid() and formset.is_valid():
-            # --- Guardar la orden principal ---
             orden = form.save(commit=False)
             orden.usuario = request.user
             orden.tipo_documento = "COTIZACIÓN"
             orden.save()
 
-            # --- Guardar los ítems normales ---
-            items = formset.save(commit=False)
-            for item in items:
-                item.orden = orden
-                item.save()
+            # Vincular los ítems con la orden
+            formset.instance = orden
+            formset.save()
 
-            # --- Guardar productos especiales (hasta 4) ---
+            # Guardar productos especiales
             for i in range(1, 5):
                 esp_tipo = request.POST.get(f"especial_tipo_{i}", "").strip()
                 esp_cant = request.POST.get(f"especial_cantidad_{i}", "").strip()
                 esp_prec = request.POST.get(f"especial_precio_{i}", "").strip()
-                esp_desc = request.POST.get(f"especial_descuento_{i}", "").strip()  # 👈 Nuevo campo opcional
+                esp_desc = request.POST.get(f"especial_descuento_{i}", "").strip()
 
                 if esp_tipo and esp_cant and esp_prec:
                     try:
@@ -154,19 +165,18 @@ def crear_orden(request):
                         descripcion=esp_tipo,
                         cantidad=cantidad,
                         precio=precio,
-                        descuento=descuento,  # 👈 Guardar descuento si lo hay
+                        descuento=descuento,
                     )
 
-            # --- Recalcular total considerando descuentos individuales ---
+            # Calcular total
             total = sum(item.subtotal() for item in orden.items.all())
             orden.monto_total = total
             orden.save()
-
             return redirect("orden_list")
 
     else:
         form = OrdenForm()
-        formset = ItemFormSet(queryset=Item.objects.none())
+        formset = ItemFormSet()
 
     return render(request, "COTIFAC/orden_form.html", {
         "form": form,
@@ -174,6 +184,59 @@ def crear_orden(request):
         "productos_json": json.dumps(productos_json),
     })
 
+
+@login_required
+def editar_orden(request, pk):
+    from django.forms import inlineformset_factory
+    orden = get_object_or_404(OrdenCompra, pk=pk, usuario=request.user)
+
+    productos = Producto.objects.all()
+    productos_json = {
+        str(p.id): {
+            "descripcion": f"{p.tipo} {p.codigo} {p.medida}",
+            "precio": float(p.precio),
+        }
+        for p in productos
+    }
+
+    ItemFormSet = inlineformset_factory(
+        OrdenCompra,
+        Item,
+        form=ItemForm,
+        extra=0,
+        can_delete=True,
+        fields="__all__",
+    )
+
+    # Inicializamos las variables fuera del bloque
+    form = None
+    formset = None
+
+    if request.method == "POST":
+        form = OrdenForm(request.POST, instance=orden)
+        formset = ItemFormSet(request.POST, instance=orden)
+
+        if form.is_valid() and formset.is_valid():
+            orden = form.save()
+            formset.save()
+            total = sum(item.subtotal() for item in orden.items.all())
+            orden.monto_total = total
+            orden.save()
+            return redirect("orden_list")
+        else:
+            print("⚠️ ERRORES EN FORMULARIO:")
+            print(form.errors)
+            print(formset.errors)
+    else:
+        form = OrdenForm(instance=orden)
+        formset = ItemFormSet(instance=orden)
+
+    return render(request, "COTIFAC/orden_form.html", {
+        "form": form,
+        "formset": formset,
+        "productos_json": json.dumps(productos_json),
+        "edit_mode": True,
+    })
 
 
 
