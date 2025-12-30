@@ -188,9 +188,11 @@ def crear_orden(request):
 @login_required
 def editar_orden(request, pk):
     from django.forms import inlineformset_factory
-    orden = get_object_or_404(OrdenCompra, pk=pk, usuario=request.user)
+    from decimal import Decimal
 
+    orden = get_object_or_404(OrdenCompra, pk=pk, usuario=request.user)
     productos = Producto.objects.all()
+
     productos_json = {
         str(p.id): {
             "descripcion": f"{p.tipo} {p.codigo} {p.medida}",
@@ -208,7 +210,6 @@ def editar_orden(request, pk):
         fields="__all__",
     )
 
-    # Inicializamos las variables fuera del bloque
     form = None
     formset = None
 
@@ -219,9 +220,36 @@ def editar_orden(request, pk):
         if form.is_valid() and formset.is_valid():
             orden = form.save()
             formset.save()
+
+            # 🔹 Actualizamos los productos especiales (hasta 4)
+            orden.items.filter(producto__isnull=True).delete()
+            for i in range(1, 5):
+                esp_tipo = request.POST.get(f"especial_tipo_{i}", "").strip()
+                esp_cant = request.POST.get(f"especial_cantidad_{i}", "").strip()
+                esp_prec = request.POST.get(f"especial_precio_{i}", "").strip()
+                esp_desc = request.POST.get(f"especial_descuento_{i}", "").strip()
+
+                if esp_tipo and esp_cant and esp_prec:
+                    try:
+                        cantidad = int(esp_cant)
+                        precio = Decimal(esp_prec)
+                        descuento = Decimal(esp_desc) if esp_desc else Decimal(0)
+                    except:
+                        continue
+
+                    Item.objects.create(
+                        orden=orden,
+                        producto=None,
+                        descripcion=esp_tipo,
+                        cantidad=cantidad,
+                        precio=precio,
+                        descuento=descuento,
+                    )
+
             total = sum(item.subtotal() for item in orden.items.all())
             orden.monto_total = total
             orden.save()
+
             return redirect("orden_list")
         else:
             print("⚠️ ERRORES EN FORMULARIO:")
@@ -231,10 +259,23 @@ def editar_orden(request, pk):
         form = OrdenForm(instance=orden)
         formset = ItemFormSet(instance=orden)
 
+    # 🔹 Recuperar los productos especiales actuales
+    especiales = orden.items.filter(producto__isnull=True)
+    especiales_data = []
+    for idx, esp in enumerate(especiales, start=1):
+        especiales_data.append({
+            "i": idx,
+            "tipo": esp.descripcion,
+            "cantidad": esp.cantidad,
+            "precio": esp.precio,
+            "descuento": esp.descuento,
+        })
+
     return render(request, "COTIFAC/orden_form.html", {
         "form": form,
         "formset": formset,
         "productos_json": json.dumps(productos_json),
+        "especiales": especiales_data,
         "edit_mode": True,
     })
 
