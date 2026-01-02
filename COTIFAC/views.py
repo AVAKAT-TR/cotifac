@@ -181,6 +181,7 @@ def crear_orden(request):
     return render(request, "COTIFAC/orden_form.html", {
         "form": form,
         "formset": formset,
+        "productos": productos, 
         "productos_json": json.dumps(productos_json),
     })
 
@@ -201,27 +202,25 @@ def editar_orden(request, pk):
         for p in productos
     }
 
+    # 👇 El formset ahora permite borrar y agregar dinámicamente
     ItemFormSet = inlineformset_factory(
         OrdenCompra,
         Item,
         form=ItemForm,
-        extra=0,
-        can_delete=True,
+        extra=1,              # 👈 deja 1 filas vacías disponibles
+        can_delete=True,      # 👈 permite eliminar
         fields="__all__",
     )
-
-    form = None
-    formset = None
 
     if request.method == "POST":
         form = OrdenForm(request.POST, instance=orden)
         formset = ItemFormSet(request.POST, instance=orden)
 
         if form.is_valid() and formset.is_valid():
-            orden = form.save()
+            form.save()
             formset.save()
 
-            # 🔹 Actualizamos los productos especiales (hasta 4)
+            # 🔹 Actualizar los productos especiales
             orden.items.filter(producto__isnull=True).delete()
             for i in range(1, 5):
                 esp_tipo = request.POST.get(f"especial_tipo_{i}", "").strip()
@@ -246,38 +245,43 @@ def editar_orden(request, pk):
                         descuento=descuento,
                     )
 
-            total = sum(item.subtotal() for item in orden.items.all())
-            orden.monto_total = total
+            # 🔹 Recalcular total
+            orden.monto_total = sum(item.subtotal() for item in orden.items.all())
             orden.save()
 
             return redirect("orden_list")
+
         else:
-            print("⚠️ ERRORES EN FORMULARIO:")
+            print("⚠️ ERRORES:")
             print(form.errors)
             print(formset.errors)
+
     else:
         form = OrdenForm(instance=orden)
         formset = ItemFormSet(instance=orden)
 
-    # 🔹 Recuperar los productos especiales actuales
+    # 🔹 Recuperar productos especiales existentes
     especiales = orden.items.filter(producto__isnull=True)
-    especiales_data = []
-    for idx, esp in enumerate(especiales, start=1):
-        especiales_data.append({
-            "i": idx,
-            "tipo": esp.descripcion,
-            "cantidad": esp.cantidad,
-            "precio": esp.precio,
-            "descuento": esp.descuento,
-        })
+    especiales_data = [
+        {
+            "i": idx + 1,
+            "tipo": e.descripcion,
+            "cantidad": e.cantidad,
+            "precio": e.precio,
+            "descuento": e.descuento,
+        }
+        for idx, e in enumerate(especiales)
+    ]
 
     return render(request, "COTIFAC/orden_form.html", {
         "form": form,
         "formset": formset,
+        "productos": productos, 
         "productos_json": json.dumps(productos_json),
         "especiales": especiales_data,
         "edit_mode": True,
     })
+
 
 
 
