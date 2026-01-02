@@ -685,6 +685,140 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // JSON con productos y precios (lo genera Django en el template)
+  const productos = {{ productos_json|safe }};
+
+  // --- Calcular totales globales ---
+  function calcularTotales() {
+    let subtotal = 0;
+
+    // Productos normales
+    document.querySelectorAll("tr.item-row").forEach(fila => {
+      const cantidad = parseFloat(fila.querySelector("input[name*=cantidad]")?.value || 0);
+      const precio = parseFloat(fila.querySelector("input[name*=precio]")?.value || 0);
+      const descuento = parseFloat(fila.querySelector("input[name*=descuento]")?.value || 0);
+
+      let total = cantidad * precio;
+      if (descuento > 0) total -= total * (descuento / 100);
+      fila.querySelector(".total-item").value = total.toLocaleString("es-CL");
+      subtotal += total;
+    });
+
+    // Productos especiales
+    document.querySelectorAll(".item-row.especial").forEach(fila => {
+      const cantidad = parseFloat(fila.querySelector("input[name*=cantidad]")?.value || 0);
+      const precio = parseFloat(fila.querySelector("input[name*=precio]")?.value || 0);
+      const descuento = parseFloat(fila.querySelector("input[name*=descuento]")?.value || 0);
+
+      let total = cantidad * precio;
+      if (descuento > 0) total -= total * (descuento / 100);
+      fila.querySelector(".total-item-especial").value = total.toLocaleString("es-CL");
+      subtotal += total;
+    });
+
+    const totalInput = document.querySelector("input[name='monto_total']");
+    if (totalInput) totalInput.value = subtotal.toLocaleString("es-CL");
+  }
+
+  // --- Productos NORMALES ---
+  const botonAgregarNormal = document.getElementById("agregar-normal");
+  const tablaNormales = document.getElementById("items-table");
+
+  if (botonAgregarNormal && tablaNormales) {
+    botonAgregarNormal.addEventListener("click", function () {
+      const existentes = tablaNormales.querySelectorAll("tr.item-row").length + 1;
+
+      const nuevaFila = document.createElement("tr");
+      nuevaFila.className = "item-row";
+      nuevaFila.innerHTML = `
+        <td>
+          <select name="form-${existentes}-producto" class="producto-select" required>
+            <option value="">Seleccione...</option>
+            {% for p in productos %}
+              <option value="{{ p.id }}">{{ p.tipo }} {{ p.codigo }} {{ p.medida }}</option>
+            {% endfor %}
+          </select>
+        </td>
+        <td><input type="text" name="form-${existentes}-descripcion" placeholder="Descripción" style="width:95%" readonly></td>
+        <td><input type="number" min="0" name="form-${existentes}-cantidad" value="0" style="width:80px"></td>
+        <td><input type="number" name="form-${existentes}-precio" value="0" style="width:100px" readonly></td>
+        <td><input type="number" min="0" max="100" step="0.1" name="form-${existentes}-descuento" value="0" style="width:80px"></td>
+        <td><input type="text" class="total-item" readonly></td>
+        <td style="text-align:center;">🗑️</td>
+      `;
+
+      tablaNormales.appendChild(nuevaFila);
+
+      // --- Cuando seleccionás un producto ---
+      const select = nuevaFila.querySelector(".producto-select");
+      const precioInput = nuevaFila.querySelector("input[name*=precio]");
+      const descripcionInput = nuevaFila.querySelector("input[name*=descripcion]");
+
+      select.addEventListener("change", function () {
+        const prodData = productos[this.value];
+        if (prodData) {
+          precioInput.value = prodData.precio;
+          descripcionInput.value = prodData.descripcion;
+        } else {
+          precioInput.value = 0;
+          descripcionInput.value = "";
+        }
+        calcularTotales();
+      });
+
+      // Eventos de cálculo
+      nuevaFila.querySelectorAll("input, select").forEach(el => {
+        el.addEventListener("input", calcularTotales);
+        el.addEventListener("change", calcularTotales);
+      });
+    });
+  }
+
+  // --- Productos ESPECIALES (igual que antes) ---
+  const botonAgregarEspecial = document.getElementById("agregar-especial");
+  const tablaEspeciales = document.getElementById("tabla-especiales");
+
+  if (botonAgregarEspecial && tablaEspeciales) {
+    botonAgregarEspecial.addEventListener("click", function () {
+      const existentes = tablaEspeciales.querySelectorAll("tr.item-row.especial").length + 1;
+      const nuevaFila = document.createElement("tr");
+      nuevaFila.className = "item-row especial";
+      nuevaFila.innerHTML = `
+        <td><input type="text" name="especial_tipo_${existentes}" placeholder="Descripción del producto" style="width:95%"></td>
+        <td><input type="number" min="0" name="especial_cantidad_${existentes}" value="0" style="width:80px"></td>
+        <td><input type="number" min="0" name="especial_precio_${existentes}" value="0" style="width:100px"></td>
+        <td><input type="number" min="0" max="100" step="0.1" name="especial_descuento_${existentes}" value="0" style="width:80px"></td>
+        <td><input type="text" class="total-item-especial" readonly></td>
+      `;
+      tablaEspeciales.appendChild(nuevaFila);
+      nuevaFila.querySelectorAll("input").forEach(inp => {
+        inp.addEventListener("input", calcularTotales);
+        inp.addEventListener("change", calcularTotales);
+      });
+    });
+  }
+});
+</script>
+
+
+
+
+
+
+
+
 <body>
 
   <div class="contenedor-boton">
@@ -727,66 +861,75 @@ document.addEventListener("DOMContentLoaded", function() {
     <td>{{ f.descripcion }}</td>
     <td>{{ f.cantidad }}</td>
     <td>{{ f.precio }}</td>
-    <td>{{ f.descuento }}</td> <!-- 👈 Nuevo campo editable -->
+    <td>{{ f.descuento }}</td>
     <td><input type="text" class="total-item" readonly></td>
+    <td style="text-align:center;">{{ f.DELETE }} 🗑️</td>  <!-- 👈 botón eliminar -->
   </tr>
   {% endfor %}
 </table>
 
+<!-- 🔹 Botón para agregar más productos normales -->
+<div style="text-align:center; margin-top:10px;">
+  <button type="button" id="agregar-normal"
+          style="background-color:#4e734e; border:none; border-radius:6px; padding:8px 14px; color:white; cursor:pointer;">
+    ➕ Agregar producto
+  </button>
+</div>
+
+
     
 
 <table>
-  <tr class="item-row especial">
-    <td colspan="6" style="background-color:#f7f7f7; font-weight:bold;">
-      Productos especiales [ ingreso manual ]
-    </td>
-  </tr>
-  <tr>
-    <th style="background-color:#817e7e;">Descripción</th>
-    <th style="background-color:#817e7e;">Unidades</th>
-    <th style="background-color:#817e7e;">Precio Unitario</th>
-    <th style="background-color:#817e7e;">Descuento (%)</th>
-    <th style="background-color:#817e7e;">Total</th>
-  </tr>
+  <thead>
+    <tr class="item-row especial">
+      <td colspan="6" style="background-color:#f7f7f7; font-weight:bold;">
+        Productos especiales [ ingreso manual ]
+      </td>
+    </tr>
+    <tr>
+      <th style="background-color:#817e7e;">Descripción</th>
+      <th style="background-color:#817e7e;">Unidades</th>
+      <th style="background-color:#817e7e;">Precio Unitario</th>
+      <th style="background-color:#817e7e;">Descuento (%)</th>
+      <th style="background-color:#817e7e;">Total</th>
+    </tr>
+  </thead>
 
-  {% if especiales %}
-    {% for esp in especiales %}
-    <tr class="item-row especial">
-      <td>
-        <input type="text" name="especial_tipo_{{esp.i}}" 
-               value="{{esp.tipo}}" placeholder="Descripción del producto" 
-               style="width:95%">
-      </td>
-      <td>
-        <input type="number" min="0" name="especial_cantidad_{{esp.i}}" 
-               value="{{esp.cantidad}}" style="width:80px">
-      </td>
-      <td>
-        <input type="number" min="0" name="especial_precio_{{esp.i}}" 
-               value="{{esp.precio}}" style="width:100px">
-      </td>
-      <td>
-        <input type="number" min="0" max="100" step="0.1" 
-               name="especial_descuento_{{esp.i}}" 
-               value="{{esp.descuento}}" style="width:80px">
-      </td>
-      <td>
-        <input type="text" class="total-item-especial" readonly>
-      </td>
-    </tr>
-    {% endfor %}
-  {% else %}
-    {% for i in "1234" %}
-    <tr class="item-row especial">
-      <td><input type="text" name="especial_tipo_{{i}}" placeholder="Descripción del producto" style="width:95%"></td>
-      <td><input type="number" min="0" name="especial_cantidad_{{i}}" value="0" style="width:80px"></td>
-      <td><input type="number" min="0" name="especial_precio_{{i}}" value="0" style="width:100px"></td>
-      <td><input type="number" min="0" max="100" step="0.1" name="especial_descuento_{{i}}" value="0" style="width:80px"></td>
-      <td><input type="text" class="total-item-especial" readonly></td>
-    </tr>
-    {% endfor %}
-  {% endif %}
+  <tbody id="tabla-especiales">
+    {% if especiales %}
+      {% for esp in especiales %}
+      <tr class="item-row especial">
+        <td>
+          <input type="text" name="especial_tipo_{{esp.i}}" value="{{esp.tipo}}" placeholder="Descripción del producto" style="width:95%">
+        </td>
+        <td><input type="number" min="0" name="especial_cantidad_{{esp.i}}" value="{{esp.cantidad}}" style="width:80px"></td>
+        <td><input type="number" min="0" name="especial_precio_{{esp.i}}" value="{{esp.precio}}" style="width:100px"></td>
+        <td><input type="number" min="0" max="100" step="0.1" name="especial_descuento_{{esp.i}}" value="{{esp.descuento}}" style="width:80px"></td>
+        <td><input type="text" class="total-item-especial" readonly></td>
+      </tr>
+      {% endfor %}
+    {% else %}
+      {% for i in "1234" %}
+      <tr class="item-row especial">
+        <td><input type="text" name="especial_tipo_{{i}}" placeholder="Descripción del producto" style="width:95%"></td>
+        <td><input type="number" min="0" name="especial_cantidad_{{i}}" value="0" style="width:80px"></td>
+        <td><input type="number" min="0" name="especial_precio_{{i}}" value="0" style="width:100px"></td>
+        <td><input type="number" min="0" max="100" step="0.1" name="especial_descuento_{{i}}" value="0" style="width:80px"></td>
+        <td><input type="text" class="total-item-especial" readonly></td>
+      </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
 </table>
+<!-- 🔹 Botón para agregar nuevas filas de productos especiales -->
+<div style="text-align:center; margin-top:10px;">
+  <button type="button" id="agregar-especial" 
+          style="background-color:#4e734e; border:none; border-radius:6px; padding:8px 14px; color:white; cursor:pointer;">
+    ➕ Agregar producto especial
+  </button>
+</div>
+
+
 
 
 
@@ -858,7 +1001,13 @@ document.addEventListener("DOMContentLoaded", function() {
     <button type="submit">Guardar</button>
   </form>
   <button style="background-color: red;">
-    <a style="text-decoration: none;color: aliceblue;" href="{% url 'orden_list' %}">⬅ Volver</a>
+    <a href="{% url 'orden_list' %}"
+   style="display:block; background-color:#c44747; color:white; 
+          text-decoration:none; text-align:center;
+          padding:5px 10px; border-radius:8px; 
+          font-weight:bold; margin-top:5px;">
+  ⬅ Volver
+</a>
   </button>
 
 
