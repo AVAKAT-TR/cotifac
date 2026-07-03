@@ -126,7 +126,7 @@
     "tipo": "PLUMÓN",
     "codigo": "PREMIUM",
     "medida": "1PLAZA 1.20x2.00",
-    "precio": "375000"
+    "precio": "400000"
   }
 },
 {
@@ -136,7 +136,7 @@
     "tipo": "PLUMÓN",
     "codigo": "PREMIUM",
     "medida": "1PLAZA 1.40x2.00",
-    "precio": "440000"
+    "precio": "470000"
   }
 },
 {
@@ -146,7 +146,7 @@
     "tipo": "PLUMÓN",
     "codigo": "PREMIUM",
     "medida": "1.5PLAZAS 1.60x2.00",
-    "precio": "490000"
+    "precio": "530000"
   }
 },
 {
@@ -156,7 +156,7 @@
     "tipo": "PLUMÓN",
     "codigo": "PREMIUM",
     "medida": "2Plazas 2.20x2.00",
-    "precio": "690000"
+    "precio": "740000"
   }
 },
 {
@@ -166,7 +166,7 @@
     "tipo": "PLUMÓN",
     "codigo": "PREMIUM",
     "medida": "QUEEN 2.40x2.20",
-    "precio": "810000"
+    "precio": "870000"
   }
 },
 {
@@ -176,7 +176,7 @@
     "tipo": "PLUMÓN",
     "codigo": "PREMIUM",
     "medida": "KING 2.60x2.20",
-    "precio": "900000"
+    "precio": "965000"
   }
 },
 {
@@ -186,7 +186,7 @@
     "tipo": "PLUMÓN",
     "codigo": "PREMIUM",
     "medida": "SUPERKING 2.70x2.40",
-    "precio": "995000"
+    "precio": "1065000"
   }
 },
 {
@@ -196,7 +196,7 @@
     "tipo": "PLUMÓN",
     "codigo": "OBERHAUS",
     "medida": "2Plazas 2.20x2.00",
-    "precio": "767000"
+    "precio": "840000"
   }
 },
 {
@@ -206,7 +206,7 @@
     "tipo": "PLUMÓN",
     "codigo": "OBERHAUS",
     "medida": "QUEEN 2.40x2.20",
-    "precio": "880000"
+    "precio": "965000"
   }
 },
 {
@@ -216,7 +216,7 @@
     "tipo": "PLUMÓN",
     "codigo": "OBERHAUS",
     "medida": "KING 2.60x2.20",
-    "precio": "970000"
+    "precio": "1060000"
   }
 },
 {
@@ -226,7 +226,7 @@
     "tipo": "PLUMÓN",
     "codigo": "OBERHAUS",
     "medida": "SUPERKING 2.70x2.40",
-    "precio": "1045000"
+    "precio": "1150000"
   }
 },
 {
@@ -236,7 +236,7 @@
     "tipo": "PLUMÓN",
     "codigo": "HIS & HERS",
     "medida": "2Plazas 2.20x2.00",
-    "precio": "615000"
+    "precio": "630000"
   }
 },
 {
@@ -246,7 +246,7 @@
     "tipo": "PLUMÓN",
     "codigo": "HIS & HERS",
     "medida": "QUEEN 2.40x2.20",
-    "precio": "720000"
+    "precio": "740000"
   }
 },
 {
@@ -256,7 +256,7 @@
     "tipo": "PLUMÓN",
     "codigo": "HIS & HERS",
     "medida": "KING 2.60x2.20",
-    "precio": "815000"
+    "precio": "820000"
   }
 },
 {
@@ -266,7 +266,7 @@
     "tipo": "PLUMÓN",
     "codigo": "HIS & HERS",
     "medida": "SUPERKING 2.70x2.40",
-    "precio": "895000"
+    "precio": "900000"
   }
 },
 {
@@ -276,7 +276,7 @@
     "tipo": "PLUMÓN",
     "codigo": "VERANO",
     "medida": "1PLAZA 1.20x2.00",
-    "precio": "250000"
+    "precio": "260000"
   }
 },
 {
@@ -286,7 +286,7 @@
     "tipo": "PLUMÓN",
     "codigo": "VERANO",
     "medida": "1PLAZA 1.40x2.00",
-    "precio": "290000"
+    "precio": "305000"
   }
 },
 {
@@ -296,7 +296,7 @@
     "tipo": "PLUMÓN",
     "codigo": "VERANO",
     "medida": "1.5PLAZAS 1.60x2.00",
-    "precio": "330000"
+    "precio": "350000"
   }
 },
 {
@@ -306,7 +306,7 @@
     "tipo": "PLUMÓN",
     "codigo": "VERANO",
     "medida": "2Plazas 2.20x2.00",
-    "precio": "460000"
+    "precio": "480000"
   }
 },
 {
@@ -316,7 +316,7 @@
     "tipo": "PLUMÓN",
     "codigo": "VERANO",
     "medida": "QUEEN 2.40x2.20",
-    "precio": "540000"
+    "precio": "570000"
   }
 },
 {
@@ -326,7 +326,7 @@
     "tipo": "PLUMÓN",
     "codigo": "VERANO",
     "medida": "KING 2.60x2.20",
-    "precio": "605000"
+    "precio": "635000"
   }
 },
 {
@@ -336,7 +336,7 @@
     "tipo": "PLUMÓN",
     "codigo": "VERANO",
     "medida": "SUPERKING 2.70x2.40",
-    "precio": "690000"
+    "precio": "720000"
   }
 },
 {
