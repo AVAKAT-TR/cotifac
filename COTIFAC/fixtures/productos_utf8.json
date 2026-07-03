@@ -76,7 +76,7 @@
     "tipo": "FEATHERBED",
     "codigo": "FEATHERBED1",
     "medida": "1.5PLAZAS 1.05x2.05",
-    "precio": "420000"
+    "precio": "430000"
   }
 },
 {
@@ -86,7 +86,7 @@
     "tipo": "FEATHERBED",
     "codigo": "FEATHERBED1",
     "medida": "2PLAZAS 1.55x2.05",
-    "precio": "495000"
+    "precio": "500000"
   }
 },
 {
@@ -96,7 +96,7 @@
     "tipo": "FEATHERBED",
     "codigo": "FEATHERBED1",
     "medida": "QUEEN 1.65x2.05",
-    "precio": "520000"
+    "precio": "530000"
   }
 },
 {
@@ -106,7 +106,7 @@
     "tipo": "FEATHERBED",
     "codigo": "FEATHERBED1",
     "medida": "KING 1.85x2.05",
-    "precio": "565000"
+    "precio": "570000"
   }
 },
 {
@@ -116,7 +116,7 @@
     "tipo": "FEATHERBED",
     "codigo": "FEATHERBED1",
     "medida": "SUPERKING 2.05x2.05",
-    "precio": "630000"
+    "precio": "640000"
   }
 },
 {
@@ -386,7 +386,7 @@
     "tipo": "SAQUITO",
     "codigo": "MARINO",
     "medida": "NORMAL",
-    "precio": "120000"
+    "precio": "125000"
   }
 },
 {
@@ -396,7 +396,7 @@
     "tipo": "SAQUITO",
     "codigo": "PRADERA",
     "medida": "NORMAL",
-    "precio": "120000"
+    "precio": "125000"
   }
 },
 {
@@ -406,7 +406,7 @@
     "tipo": "SAQUITO",
     "codigo": "AURORA",
     "medida": "NORMAL",
-    "precio": "120000"
+    "precio": "125000"
   }
 },
 {
@@ -416,7 +416,7 @@
     "tipo": "SAQUITO",
     "codigo": "ESTELAR",
     "medida": "NORMAL",
-    "precio": "120000"
+    "precio": "125000"
   }
 },
 {
@@ -426,7 +426,7 @@
     "tipo": "SAQUITO",
     "codigo": "LUNAR",
     "medida": "NORMAL",
-    "precio": "120000"
+    "precio": "125000"
   }
 },
 {
@@ -566,7 +566,7 @@
     "tipo": "FUNDA ALMOHADA",
     "codigo": "PROTECTORA",
     "medida": "30x50",
-    "precio": "21000"
+    "precio": "16000"
   }
 },
 {
@@ -586,7 +586,7 @@
     "tipo": "FUNDA ALMOHADA",
     "codigo": "PROTECTORA",
     "medida": "50x70",
-    "precio": "24000"
+    "precio": "25000"
   }
 },
 {
@@ -596,7 +596,7 @@
     "tipo": "FUNDA ALMOHADA",
     "codigo": "PROTECTORA",
     "medida": "50x90",
-    "precio": "27000"
+    "precio": "28000"
   }
 },
 {
@@ -836,7 +836,7 @@
     "tipo": "PLUMÓN BEBÉ",
     "codigo": "DUVET",
     "medida": "1.20x0.80",
-    "precio": "150000"
+    "precio": "155000"
   }
 },
 {
@@ -846,7 +846,7 @@
     "tipo": "PLUMÓN BEBÉ",
     "codigo": "DUVET",
     "medida": "1.40x0.80",
-    "precio": "175000"
+    "precio": "180000"
   }
 },
 {
@@ -866,7 +866,7 @@
     "tipo": "ALMOHADA",
     "codigo": "DUVET",
     "medida": "40x60",
-    "precio": "100000"
+    "precio": "120000"
   }
 },
 {
@@ -886,7 +886,7 @@
     "tipo": "ALMOHADA",
     "codigo": "DUVET",
     "medida": "50x90",
-    "precio": "280000"
+    "precio": "300000"
   }
 },
 {
@@ -926,7 +926,7 @@
     "tipo": "ALMOHADA",
     "codigo": "SUAVE",
     "medida": "50x90",
-    "precio": "200000"
+    "precio": "220000"
   }
 },
 {
